@@ -1,0 +1,15 @@
+<h1>Bem-vindo ao Sistema</h1>
+
+<div class="navbar">
+  <h2>Categorias</h2>
+  <ul>
+    <% @categories.each do |category| %>
+      <li><%= link_to category.description, category_path(category) %></li>
+    <% end %>
+  </ul>
+</div>
+
+<div class="content">
+  <h2>Conteúdo Principal</h2>
+  <p>Coloque aqui o conteúdo que você deseja mostrar na sua página inicial.</p>
+</div>

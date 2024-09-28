@@ -1,14 +1,28 @@
-<p style="color: green"><%= notice %></p>
-
-<h1>Categories</h1>
-
-<div id="categories">
-  <% @categories.each do |category| %>
-    <%= render category %>
-    <p>
-      <%= link_to "Show this category", category %>
-    </p>
-  <% end %>
+<div id="categories" class="categories-table">
+  <h1>Lista de Categorias</h1>
+  
+  <table class="table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Descrição</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @categories.each do |category| %>
+        <tr>
+          <td><%= category.id %></td>
+          <td><%= category.description %></td>
+          <td>
+            <%= link_to "Mostrar", category, class: "btn btn-info" %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  
+  <div class="actions">
+    <%= link_to "Nova Categoria", new_category_path, class: "btn btn-success" %>
+  </div>
 </div>
-
-<%= link_to "New category", new_category_path %>

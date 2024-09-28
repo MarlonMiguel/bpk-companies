@@ -1,0 +1,32 @@
+<%= form_with(model: subcategory) do |form| %>
+  <% if subcategory.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(subcategory.errors.count, "error") %> prohibited this subcategory from being saved:</h2>
+
+      <ul>
+        <% subcategory.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :name, style: "display: block" %>
+    <%= form.text_field :name %>
+  </div>
+
+  <div>
+    <%= form.label :parent_id, style: "display: block" %>
+    <%= form.number_field :parent_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :parent_id, "Parent Subcategory" %>
+    <%= form.collection_select :parent_id, Subcategory.all, :id, :name, include_blank: true %>
+  </div>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>

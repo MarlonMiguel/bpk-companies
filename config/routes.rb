@@ -1,4 +1,9 @@
 Rails.application.routes.draw do
+  root 'home#index'  
+  resources :categories
+
+  resources :subcategories
+  resources :sellers
   resources :attributes
   resources :categories
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
