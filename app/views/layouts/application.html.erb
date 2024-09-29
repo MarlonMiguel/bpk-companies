@@ -6,12 +6,24 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
-    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
-    <%= stylesheet_link_tag 'application', 'custom', media: 'all' %>
-    <%= javascript_importmap_tags %>
+    <%= stylesheet_link_tag "application", media: "all", "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "custom", media: "all" %> 
   </head>
 
   <body>
+    <div class="container-fluid"> 
+      <div class="row">
+        <div class="col-12"> 
+          <div class="text-end"> 
+            <div class="language-select">
+              <%= link_to image_tag('country/en.png', alt: 'English', class: 'language-flag'), url_for(locale: 'en') %>
+              <%= link_to image_tag('country/pt.png', alt: 'Portuguese', class: 'language-flag'), url_for(locale: 'pt') %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
     <%= yield %>
+    <%= javascript_importmap_tags %>
   </body>
 </html>

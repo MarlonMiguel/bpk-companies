@@ -27,10 +27,11 @@
 #       "yes": yup
 #       enabled: "ON"
 
-en:
+pt:
   lists:
-    list_of_categories: "List of categories"
-    list_of_subcategories: "List of subcategories"
-    list_of_sellers: "List of sellers"
-    list_of_products: "List of products"
-    list_of_attributes: "List of attributes"
+    list_of_categories: "Lista de categorias"
+    list_of_subcategories: "Lista de sub-categorias"
+    list_of_sellers: "Lista de vendedores"
+    list_of_products: "Lista de produtos"
+    list_of_attributes: "Lista de atributos"
+

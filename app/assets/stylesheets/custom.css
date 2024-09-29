@@ -101,3 +101,12 @@ input[type="submit"]:hover {
     margin-left: 220px; 
     padding: 15px;
   }
+
+  .language-flag {
+    width: 30px; 
+    height: auto; 
+  }
+
+  .language-select {
+    margin-right: 15px;
+  }

@@ -1,11 +1,12 @@
 <div id="categories" class="categories-table">
-  <h1>Lista de Categorias</h1>
+  <h1><%= t('lists.list_of_categories') %></h1>
   
   <table class="table">
     <thead>
       <tr>
         <th>ID</th>
         <th>Descrição</th>
+        <th>Categoria Pai</th>
         <th>Ações</th>
       </tr>
     </thead>
@@ -14,8 +15,10 @@
         <tr>
           <td><%= category.id %></td>
           <td><%= category.description %></td>
+          <td><%= category.parent.present? ? category.parent.description : "Nenhuma" %></td>
           <td>
-            <%= link_to "Mostrar", category, class: "btn btn-info" %>
+            <%= link_to "Editar", category_path(category, locale: I18n.locale), class: "btn btn-info" %>
+            <%= link_to "Excluir", category_path(category, locale: I18n.locale), class: "btn btn-danger" %>
           </td>
         </tr>
       <% end %>
