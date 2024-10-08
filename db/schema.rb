@@ -10,15 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_09_28_154411) do
+ActiveRecord::Schema[7.1].define(version: 2024_10_07_213459) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "attributes", force: :cascade do |t|
     t.string "description"
-    t.string "type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "domain", limit: 1
   end
 
   create_table "categories", force: :cascade do |t|
@@ -27,6 +27,14 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_28_154411) do
     t.datetime "updated_at", null: false
     t.integer "parent_id"
     t.index ["parent_id"], name: "index_categories_on_parent_id"
+  end
+
+  create_table "category_attributes", id: false, force: :cascade do |t|
+    t.bigint "category_id", null: false
+    t.bigint "attribute_id", null: false
+    t.index ["attribute_id"], name: "index_category_attributes_on_attribute_id"
+    t.index ["category_id", "attribute_id"], name: "index_category_attributes_on_category_id_and_attribute_id", unique: true
+    t.index ["category_id"], name: "index_category_attributes_on_category_id"
   end
 
   create_table "sellers", force: :cascade do |t|
@@ -46,4 +54,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_28_154411) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "category_attributes", "attributes"
+  add_foreign_key "category_attributes", "categories"
 end

@@ -1,10 +1,10 @@
-<%= form_with(model: category, local: true) do |form| %>
+<%= form_with(model: category, url: category_path(category, locale: I18n.locale), local: true) do |form| %>
   <% if category.errors.any? %>
     <div class="alert alert-danger">
       <h2><%= pluralize(category.errors.count, "error") %> prohibited this category from being saved:</h2>
       <ul>
-        <% category.errors.each do |error| %>
-          <li><%= error.full_message %></li>
+        <% category.errors.full_messages.each do |error| %> <!-- Corrigido para full_messages -->
+          <li><%= error %></li> <!-- Exibindo a mensagem de erro diretamente -->
         <% end %>
       </ul>
     </div>

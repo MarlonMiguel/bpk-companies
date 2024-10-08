@@ -2,17 +2,16 @@ module ApplicationHelper
   def render_category_menu(categories)
     categories.each do |category|
       if category.subcategories.any?
-        concat(content_tag(:li, class: "nav-item dropdown") do
-          concat(link_to(category.description, "#", class: "nav-link dropdown-toggle", id: "navbarDropdown#{category.id}", role: "button", data: { bs_toggle: "dropdown" }, aria: { expanded: "false" }))
-
-          # Recursão para subcategorias
-          concat(content_tag(:ul, class: "dropdown-menu") do
+        concat(content_tag(:li, class: "dropdown-submenu", data: { controller: "dropdown" }) do
+          concat(content_tag(:span, category.description, class: "dropdown-toggle", data: { action: "click->dropdown#toggle" }))
+          
+          concat(content_tag(:ul, class: "dropdown-menu", style: "display: none;") do
             render_category_menu(category.subcategories)
           end)
         end)
       else
-        concat(content_tag(:li, class: "nav-item") do
-          concat(link_to(category.description, category_path(category, locale: I18n.locale), class: "dropdown-item"))
+        concat(content_tag(:li) do
+          concat(content_tag(:span, category.description))
         end)
       end
     end

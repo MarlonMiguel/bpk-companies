@@ -8,6 +8,7 @@ class AttributesController < ApplicationController
 
   # GET /attributes/1 or /attributes/1.json
   def show
+    @attribute = Attribute.find(params[:id])
   end
 
   # GET /attributes/new
@@ -17,6 +18,7 @@ class AttributesController < ApplicationController
 
   # GET /attributes/1/edit
   def edit
+    @attribute = Attribute.find(params[:id])
   end
 
   # POST /attributes or /attributes.json
@@ -25,7 +27,7 @@ class AttributesController < ApplicationController
 
     respond_to do |format|
       if @attribute.save
-        format.html { redirect_to @attribute, notice: "Attribute was successfully created." }
+        format.html { redirect_to attribute_path(@attribute, locale: I18n.locale), notice: "Attribute was successfully created." }
         format.json { render :show, status: :created, location: @attribute }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -65,6 +67,6 @@ class AttributesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def attribute_params
-      params.require(:attribute).permit(:description, :type)
+      params.require(:attribute).permit(:description, :domain)
     end
 end

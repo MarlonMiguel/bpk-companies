@@ -5,9 +5,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-
-    <%= stylesheet_link_tag "application", media: "all", "data-turbo-track": "reload" %>
-    <%= stylesheet_link_tag "custom", media: "all" %> 
+    
+    <%= stylesheet_link_tag "application", media: "all", "data-turbo-track": "reload" %> 
+    <%= stylesheet_link_tag "custom", media: "all" %>
+    <%= javascript_importmap_tags %>
   </head>
 
   <body>
@@ -24,6 +25,5 @@
       </div>
     </div>
     <%= yield %>
-    <%= javascript_importmap_tags %>
   </body>
 </html>

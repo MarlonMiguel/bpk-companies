@@ -18,6 +18,7 @@ class CategoriesController < ApplicationController
 
   # GET /categories/1/edit
   def edit
+    @category = Category.find(params[:id])
   end
 
   # POST /categories or /categories.json
@@ -37,14 +38,15 @@ class CategoriesController < ApplicationController
 
   # PATCH/PUT /categories/1 or /categories/1.json
   def update
-    respond_to do |format|
-      if @category.update(category_params)
-        format.html { redirect_to @category, notice: "Category was successfully updated." }
-        format.json { render :show, status: :ok, location: @category }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @category.errors, status: :unprocessable_entity }
-      end
+    @category = Category.find(params[:id])
+    puts "Antes de atualizar: #{@category.inspect}"
+  
+    if @category.update(category_params)
+      puts "Atualização bem-sucedida: #{@category.inspect}"
+      redirect_to @category, notice: 'Categoria atualizada com sucesso.'
+    else
+      puts "Erro ao atualizar: #{@category.errors.full_messages.join(', ')}"
+      render :edit, status: :unprocessable_entity
     end
   end
 
@@ -58,14 +60,34 @@ class CategoriesController < ApplicationController
     end
   end
 
+  def manage_attributes
+    @category = Category.find(params[:id]) # Carrega a categoria pelo id
+    @available_attributes = Attribute.where.not(id: @category.custom_attributes.ids)
+    @category_attributes = @category.custom_attributes
+  end
+
+  def update_attributes
+    @category = Category.find(params[:id])
+
+    attribute_ids = params[:attribute_ids].reject(&:blank?)  # Remove IDs em branco
+  
+    @category.attribute_ids = attribute_ids
+    
+    if @category.save
+      redirect_to categories_path(locale: I18n.locale), notice: 'Attributes were successfully updated.'
+    else
+      @available_attributes = Attribute.where.not(id: @category.attribute_ids)
+      @category_attributes = @category.attributes
+      render :manage_attributes
+    end
+  end
+
   private
-    # Use callbacks to share common setup or constraints between actions.
     def set_category
       @category = Category.find(params[:id])
     end
 
-    # Only allow a list of trusted parameters through.
     def category_params
-      params.require(:category).permit(:description, :parent_id)
+      params.require(:category).permit(:description, :parent_id, attribute_ids: [])
     end
 end

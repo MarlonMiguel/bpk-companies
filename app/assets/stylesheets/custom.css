@@ -89,13 +89,6 @@ input[type="submit"]:hover {
   .btn-success {
     background-color: #28a745;
   }
-
-  .navbar {
-    width: 200px;
-    float: left;
-    background-color: #f8f9fa;
-    padding: 15px;
-  }
   
   .content {
     margin-left: 220px; 

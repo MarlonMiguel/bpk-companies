@@ -1,17 +1,21 @@
-  Rails.application.routes.draw do
-    scope "(:locale)", locale: /en|pt/ do
-      root 'home#index' 
-      
-      resources :categories
-        resources :sellers
-      resources :attributes
+Rails.application.routes.draw do
+  scope "(:locale)", locale: /en|pt/ do
+    root 'home#index'
+
+    resources :categories do
+      member do
+        get 'manage_attributes'  # Rota para a tela de gerenciamento de atributos
+        patch 'update_attributes'  # Rota para salvar os vínculos
+      end
     end
-    # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
-    # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
-    # Can be used by load balancers and uptime monitors to verify that the app is live.
-    get "up" => "rails/health#show", as: :rails_health_check
-
-    # Defines the root path route ("/")
-    # root "posts#index"
+    resources :sellers
+    resources :attributes
   end
+
+  # Rota para verificar a saúde da aplicação
+  get "up" => "rails/health#show", as: :rails_health_check
+
+  # Define a rota root ("/")
+  # root "posts#index"
+end
