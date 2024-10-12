@@ -1,11 +1,37 @@
 /* custom.css */
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden; /* Impede o scroll */
+  height: 100%; /* Garante que a altura da página seja sempre 100% */
+}
 
 body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
     margin: 0;
-    padding: 20px;
 }
+
+#sidebar {
+  width: 180px; /* Ajuste a largura conforme necessário */
+  background-color: rgba(0, 0, 0, 0.5); /* Fundo transparente */
+  border-right: 1px solid #ddd; /* Borda opcional para separação */
+  position: fixed; /* Mantém o sidebar fixo ao rolar */
+  height: 20%; /* Altura total da página */
+  z-index: 2; /* Garante que o sidebar fique acima do conteúdo */
+}
+
+#sidebar .nav-link,
+#sidebar .dropdown-item {
+  color: white; /* Cor do texto para branco */
+}
+
+#sidebar .nav-link:hover,
+#sidebar .dropdown-item:hover {
+  color: white; /* Cor do texto ao passar o mouse */
+  background-color: #495057; /* Cor de fundo ao passar o mouse */
+}
+
 
 .container {
     max-width: 600px;
@@ -16,7 +42,7 @@ body {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-h1, h2, h3 {
+h1, h2 {
     color: #333;
 }
 

@@ -1,21 +1,22 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Biopark empresas</title>
-    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Biopark Empresas</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-    
-    <%= stylesheet_link_tag "application", media: "all", "data-turbo-track": "reload" %> 
+
+    <%= stylesheet_link_tag "application", media: "all", "data-turbo-track": "reload" %>
     <%= stylesheet_link_tag "custom", media: "all" %>
     <%= javascript_importmap_tags %>
   </head>
 
-  <body>
-    <div class="container-fluid"> 
+  <body>    
+    <!-- Área inferior, para outros conteúdos -->
+    <div class="container-fluid">
       <div class="row">
-        <div class="col-12"> 
-          <div class="text-end"> 
+        <div class="col-12">
+          <div class="text-end">
             <div class="language-select">
               <%= link_to image_tag('country/en.png', alt: 'English', class: 'language-flag'), url_for(locale: 'en') %>
               <%= link_to image_tag('country/pt.png', alt: 'Portuguese', class: 'language-flag'), url_for(locale: 'pt') %>
@@ -24,6 +25,7 @@
         </div>
       </div>
     </div>
-    <%= yield %>
+    <%= yield %> 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.8/umd/popper.min.js"></script>
   </body>
 </html>

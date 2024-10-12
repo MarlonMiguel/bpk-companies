@@ -67,4 +67,6 @@ gem 'dotenv-rails', groups: [:development, :test]
 
 gem 'pg', '~> 1.2'
 
-gem 'bootstrap', '~> 5.0.0'
+gem 'bootstrap', '~> 5.1.3'
+
+gem 'devise'

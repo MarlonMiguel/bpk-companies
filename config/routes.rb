@@ -4,13 +4,14 @@ Rails.application.routes.draw do
 
     resources :categories do
       member do
-        get 'manage_attributes'  # Rota para a tela de gerenciamento de atributos
-        patch 'update_attributes'  # Rota para salvar os vínculos
+        get 'manage_attributes'  
+        patch 'update_attributes' 
       end
     end
 
     resources :sellers
     resources :attributes
+    resources :products
   end
 
   # Rota para verificar a saúde da aplicação

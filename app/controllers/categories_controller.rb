@@ -69,16 +69,18 @@ class CategoriesController < ApplicationController
   def update_attributes
     @category = Category.find(params[:id])
 
-    attribute_ids = params[:attribute_ids].reject(&:blank?)  # Remove IDs em branco
+    if params[:category].present? && params[:category][:attribute_ids].present?
+      attribute_ids = params[:category][:attribute_ids].reject(&:blank?)
   
-    @category.attribute_ids = attribute_ids
-    
-    if @category.save
-      redirect_to categories_path(locale: I18n.locale), notice: 'Attributes were successfully updated.'
+      @category.custom_attributes = Attribute.where(id: attribute_ids)
+  
+      if @category.save
+        redirect_to categories_path(locale: I18n.locale), notice: 'Attributes were successfully updated.'
+      else
+        render :edit, alert: 'Error updating attributes.'
+      end
     else
-      @available_attributes = Attribute.where.not(id: @category.attribute_ids)
-      @category_attributes = @category.attributes
-      render :manage_attributes
+      redirect_to categories_path(locale: I18n.locale), alert: 'No attributes selected.'
     end
   end
 

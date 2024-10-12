@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_10_07_213459) do
+ActiveRecord::Schema[7.1].define(version: 2024_10_11_004052) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -29,12 +29,39 @@ ActiveRecord::Schema[7.1].define(version: 2024_10_07_213459) do
     t.index ["parent_id"], name: "index_categories_on_parent_id"
   end
 
-  create_table "category_attributes", id: false, force: :cascade do |t|
+  create_table "category_attributes", force: :cascade do |t|
     t.bigint "category_id", null: false
     t.bigint "attribute_id", null: false
     t.index ["attribute_id"], name: "index_category_attributes_on_attribute_id"
     t.index ["category_id", "attribute_id"], name: "index_category_attributes_on_category_id_and_attribute_id", unique: true
     t.index ["category_id"], name: "index_category_attributes_on_category_id"
+  end
+
+  create_table "product_attribute_category_values", force: :cascade do |t|
+    t.bigint "product_id", null: false
+    t.bigint "category_attribute_id", null: false
+    t.string "value"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["category_attribute_id"], name: "idx_on_category_attribute_id_51ac096201"
+    t.index ["product_id"], name: "index_product_attribute_category_values_on_product_id"
+  end
+
+  create_table "product_images", force: :cascade do |t|
+    t.bigint "product_id", null: false
+    t.string "image_path"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["product_id"], name: "index_product_images_on_product_id"
+  end
+
+  create_table "products", force: :cascade do |t|
+    t.string "name"
+    t.integer "priority"
+    t.boolean "active"
+    t.integer "category_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "sellers", force: :cascade do |t|
@@ -56,4 +83,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_10_07_213459) do
 
   add_foreign_key "category_attributes", "attributes"
   add_foreign_key "category_attributes", "categories"
+  add_foreign_key "product_attribute_category_values", "category_attributes"
+  add_foreign_key "product_attribute_category_values", "products"
+  add_foreign_key "product_images", "products"
 end

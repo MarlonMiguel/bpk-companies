@@ -1,10 +1,8 @@
-<h1>Manage Attributes for <%= @category.description %></h1>
-
-<%= form_with model: @category, url: update_attributes_category_path(@category, locale: I18n.locale), method: :patch, local: true do |form| %>
+<%= form_with model: @category, url: update_attributes_category_path(@category, locale: I18n.locale), method: :patch, local: true, data: { controller: "attribute", action: "submit->attribute#beforeSubmit" } do |form| %>  
   <div class="row">
     <div class="col-md-5">
       <h3>Available Attributes</h3>
-      <select id="available_attributes" name="available_attributes[]" multiple size="10" class="form-control">
+      <select id="available_attributes" data-attribute-target="availableAttributes" name="category[attribute_ids][]" multiple size="10" class="form-control">
         <% @available_attributes.each do |attribute| %>
           <option value="<%= attribute.id %>"><%= attribute.description %></option>
         <% end %>
@@ -12,20 +10,20 @@
     </div>
 
     <div class="col-md-2 d-flex flex-column justify-content-center align-items-center">
-      <%= button_tag type: 'button', id: 'add_attribute', class: "btn btn-primary mb-2" do %>
+      <%= button_tag type: 'button', data: { action: "click->attribute#addAttribute" }, class: "btn btn-primary mb-2" do %>
         Add >>
       <% end %>
 
-      <%= button_tag type: 'button', id: 'remove_attribute', class: "btn btn-secondary" do %>
+      <%= button_tag type: 'button', data: { action: "click->attribute#removeAttribute" }, class: "btn btn-secondary" do %>
         << Remove
       <% end %>
     </div>
 
     <div class="col-md-5">
       <h3>Assigned Attributes</h3>
-      <select id="category_attributes" name="attribute_ids[]" multiple size="10" class="form-control">
-        <% @category_attributes.each do |attribute| %>
-          <option value="<%= attribute.id %>"><%= attribute.description %></option>
+      <select id="category_attributes" data-attribute-target="categoryAttributes" name="category[attribute_ids][]" multiple size="10" class="form-control">
+        <% @category.custom_attributes.each do |attribute| %>
+          <option value="<%= attribute.id %>" selected><%= attribute.description %></option>
         <% end %>
       </select>
     </div>
@@ -35,22 +33,3 @@
     <%= form.submit 'Save Changes', class: "btn btn-success" %>
   </div>
 <% end %>
-
-<script>
-  document.getElementById('add_attribute').onclick = function() {
-    moveItems('available_attributes', 'category_attributes');
-  };
-  
-  document.getElementById('remove_attribute').onclick = function() {
-    moveItems('category_attributes', 'available_attributes');
-  };
-
-  function moveItems(from, to) {
-    var fromList = document.getElementById(from);
-    var toList = document.getElementById(to);
-
-    Array.from(fromList.selectedOptions).forEach(option => {
-      toList.appendChild(option);
-    });
-  }
-</script>
