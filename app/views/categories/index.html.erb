@@ -25,7 +25,7 @@
           <td><%= category.description %></td>
           <td><%= category.parent.present? ? category.parent.description : "Nenhuma" %></td>
           <td>
-                        <%= link_to 'Gerenciar campos', manage_attributes_category_path(category, locale: I18n.locale), class: "btn btn-warning" %>   
+            <%= link_to 'Gerenciar campos', manage_attributes_category_path(category, locale: I18n.locale), class: "btn btn-warning" %>   
             <%= link_to "Editar", edit_category_path(category, locale: I18n.locale), class: "btn btn-info" %>
             <%= link_to "Excluir", category_path(category, locale: I18n.locale), 
                 method: :delete, 

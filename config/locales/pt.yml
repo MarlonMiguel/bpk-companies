@@ -35,3 +35,14 @@ pt:
     list_of_products: "Lista de produtos"
     list_of_attributes: "Lista de atributos"
 
+  activerecord:
+    errors:
+      models:
+        user:
+          attributes:
+            profile_picture:
+              blank: "não pode ficar em branco"
+      messages:
+        not_saved: "não foi salvo devido a erros"
+        blank: "não pode ficar em branco"
+

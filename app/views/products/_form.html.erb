@@ -1,44 +1,71 @@
-<%= form_with(model: product) do |form| %>
-  <% if product.errors.any? %>
-    <div class="alert alert-danger">
-      <h2><%= pluralize(product.errors.count, "error") %> prohibited this product from being saved:</h2>
-      <ul>
-        <% product.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
+<div class="container my-4">
+  <div class="card">
+    <div class="card-header">
+      <h5><%= product.new_record? ? "Criar Produto" : "Editar Produto" %></h5>
     </div>
-  <% end %>
+    <div class="card-body">
+      <%= form_with(model: product, local: true, data: { controller: "image-preview" }) do |form| %>
+        <% if product.errors.any? %>
+          <div class="alert alert-danger">
+            <h2><%= pluralize(product.errors.count, "error") %> prohibited this product from being saved:</h2>
+            <ul>
+              <% product.errors.each do |error| %>
+                <li><%= error.full_message %></li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
 
-  <!-- Upload de Imagens -->
-  <div data-controller="image-preview" class="mb-3">
-    <%= form.label :images, "Upload Images", class: "form-label" %>
-    <%= form.file_field :images, multiple: true, data: { action: "change->image-preview#preview" }, class: "form-control" %>
-    <div data-image-preview-target="previewContainer" class="mt-2"></div> <!-- Para mostrar as miniaturas -->
+        <!-- Upload de Imagens -->
+        <div class="mb-3">
+          <%= form.label :images, "Imagens do produto", class: "form-label" %>
+          <%= form.file_field :images, multiple: true, class: "form-control", data: { action: "change->image-preview#preview" } %>
+        </div>
+
+        <!-- Contêiner de Pré-visualização das Imagens -->
+        <div class="mb-3" data-image-preview-target="previewContainer">
+          <!-- As miniaturas das imagens aparecerão aqui -->
+        </div>
+
+        <% if product.images.attached? %>
+          <div class="mb-3">
+            <h5>Imagens Salvas:</h5>
+            <div class="d-flex flex-wrap">
+              <% product.images.each do |image| %>
+                <div class="position-relative m-2" style="width: 80px; height: 80px;">
+                  <%= image_tag image, size: "80x80", class: "img-thumbnail" %>
+                  <%= form_with url: image_product_path(product, image.id, locale: I18n.locale), method: :delete, local: true do %>
+                    <%= submit_tag 'X', class: "btn btn-danger btn-sm position-absolute top-0 end-0", data: { confirm: 'Tem certeza que deseja excluir esta imagem?' }, style: "width: 20px; height: 20px; padding: 0; border-radius: 50%; line-height: 1;" %>
+                  <% end %>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+
+        <!-- Nome do Produto -->
+        <div class="mb-3">
+          <%= form.label :name, "Product Name", class: "form-label" %>
+          <%= form.text_field :name, class: "form-control" %>
+        </div>
+
+        <!-- Prioridade (não editável) -->
+        <div class="mb-3">
+          <%= form.label :priority, "Priority", class: "form-label" %>
+          <%= form.number_field :priority, value: @next_priority, readonly: true, class: "form-control" %>
+          <small class="form-text text-muted">Priority is assigned automatically.</small>
+        </div>
+
+        <!-- Estado Ativo (sempre falso) -->
+        <div class="mb-3">
+          <%= form.hidden_field :active, value: false %>
+          <p class="form-control-plaintext">Active: <%= false %></p>
+        </div>
+
+        <div class="text-end">
+          <%= form.submit "Save Product", class: "btn btn-success" %>
+        </div>
+      <% end %>
+    </div>
   </div>
-
-  <!-- Nome do Produto -->
-  <div class="mb-3">
-    <%= form.label :name, "Product Name", class: "form-label" %>
-    <%= form.text_field :name, class: "form-control" %>
-  </div>
-
-  <!-- Prioridade (não editável) -->
-  <div class="mb-3">
-    <%= form.label :priority, "Priority", class: "form-label" %>
-    <%= form.number_field :priority, value: @next_priority, readonly: true, class: "form-control" %>
-    <small class="form-text text-muted">Priority is assigned automatically.</small>
-  </div>
-
-  <!-- Categoria (exibida, não editável) -->
-
-  <!-- Estado Ativo (sempre falso) -->
-  <div class="mb-3">
-    <%= form.hidden_field :active, value: false %>
-    <p class="form-control-plaintext">Active: <%= false %></p>
-  </div>
-
-  <div>
-    <%= form.submit "Create Product", class: "btn btn-success" %>
-  </div>
-<% end %>
+</div>

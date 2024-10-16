@@ -26,3 +26,21 @@
   padding: 10px;
   border-radius: 5px;
 }
+
+.carousel-control {
+  width: 30px; /* Diminuir a largura dos botões */
+  height: 30px; /* Diminuir a altura dos botões */
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+  padding: 0.5rem; /* Reduz o padding */
+  height: auto; /* Garante que a altura seja automática */
+  line-height: 1; /* Ajusta a linha para centralizar texto */
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  width: 20px; /* Tamanho do ícone */
+  height: 20px; /* Tamanho do ícone */
+}

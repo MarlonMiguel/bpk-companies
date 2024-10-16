@@ -1,22 +1,31 @@
-<div id="<%= dom_id product %>">
-  <p>
-    <strong>Name:</strong>
-    <%= product.name %>
-  </p>
+<div id="<%= dom_id product %>" class="container mt-4"> 
+  <div class="card shadow-lg"> 
+    <div class="card-header bg-primary text-white text-center"> 
+      <h3 class="mb-0"><%= product.name %></h3> 
+    </div>
 
-  <p>
-    <strong>Priority:</strong>
-    <%= product.priority %>
-  </p>
+    <div class="card-body text-center"> 
+      <% if @product.images.attached? %>
+        <div class="product-images d-flex justify-content-center flex-wrap"> 
+          <% @product.images.each do |image| %>
+            <div class="image-wrapper position-relative m-2"> 
+              <%= image_tag image, size: "150x150", alt: "Imagem do produto", class: "img-thumbnail" %> 
+            </div>
+          <% end %>
+        </div>
+      <% else %>
+        <p class="text-muted">Nenhuma imagem disponível</p> 
+      <% end %>
 
-  <p>
-    <strong>Active:</strong>
-    <%= product.active %>
-  </p>
-
-  <p>
-    <strong>Category:</strong>
-    <%= product.category_id %>
-  </p>
-
+      <div class="mt-4">
+        <p class="mb-1"><strong>Prioridade:</strong> <%= product.priority || 'Não definida' %></p>
+        <p class="mb-1"><strong>Status:</strong> <%= product.active ? 'Ativo' : 'Inativo' %></p>
+        <p class="mb-1"><strong>Categoria:</strong> <%= product.category_id || 'Sem categoria' %></p>
+      </div>
+    </div>
+    <div class="card-footer d-flex justify-content-between">
+      <%= link_to 'Editar', edit_product_path(@product, locale: I18n.locale), class: "btn btn-primary" %>
+      <%= link_to 'Voltar', products_path(locale: I18n.locale), class: "btn btn-secondary" %>
+    </div>
+  </div>
 </div>

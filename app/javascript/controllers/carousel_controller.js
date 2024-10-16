@@ -5,7 +5,7 @@ export default class extends Controller {
   connect() {
     // Inicializa o carrossel do Bootstrap
     this.carousel = new bootstrap.Carousel(this.element, {
-      interval: 2000, // Tempo de exibição de cada slide em milissegundos
+      interval: 1000, // Tempo de exibição de cada slide em milissegundos
       touch: false // Desabilita o toque para navegação
     });
 
