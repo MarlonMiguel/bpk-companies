@@ -1,0 +1,27 @@
+.card {
+    height: 100%; /* Para garantir que o card preencha a altura do contêiner */
+  }
+  
+  .card-img-top {
+    width: 100%; /* Tamanho total da imagem no card */
+    height: 200px; /* Altura fixa para a imagem */
+    object-fit: cover; /* Garante que a imagem seja cortada proporcionalmente */
+  }
+  
+  .card-body {
+    border-top: 1px solid #ccc; /* Adiciona um separador entre a imagem e as informações */
+    padding-top: 15px;
+  }
+
+  .manager-card {
+    width: 750px; /* Ajuste o valor conforme necessário */
+  }
+
+  .container {
+    max-width: 800px;
+    margin: auto;
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}

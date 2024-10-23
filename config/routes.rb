@@ -1,12 +1,42 @@
 Rails.application.routes.draw do
-  resources :attributes
-  resources :categories
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
+  get 'store', to: 'pages#store'
+  get 'users/index'
 
-  # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
-  # Can be used by load balancers and uptime monitors to verify that the app is live.
+  devise_for :users, controllers: {
+    sessions: 'users/sessions'
+  }
+
+  scope "(:locale)", locale: /en|pt/ do
+    root 'home#index'
+
+    resources :categories do
+      member do
+        get 'manage_attributes'  
+        get 'attributes', to: 'categories#attributes'
+        patch 'update_attributes' 
+      end
+    end
+
+    resources :users do
+      member do
+        patch 'toggle_active' 
+        get 'manage_categories'
+        patch 'update_categories'
+      end
+    end
+
+    resources :attributes
+    
+    resources :products do
+      member do
+        delete 'images/:image_id', to: 'products#destroy_image', as: 'image'
+      end
+    end
+  end
+
   get "up" => "rails/health#show", as: :rails_health_check
 
-  # Defines the root path route ("/")
+  # A rota root padrão, caso seja necessário
   # root "posts#index"
 end
+

@@ -1,0 +1,34 @@
+<h1>Lista de Produtos</h1>
+
+<%= link_to 'Cadastrar Novo Produto', new_product_path, class: 'btn btn-success mb-3' %> 
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Nome do Produto</th>
+      <th>Vendedor</th>
+      <th>Prioridade</th>
+      <th>Ativo</th>
+      <th>Ações</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @products.each do |product| %>
+      <tr>
+        <td><%= product.name %></td>
+        <td><%= product.user.name %></td> 
+        <td><%= product.priority %></td> 
+        <td><%= product.active %></td> 
+        <td>
+          <% if product.id.present? %>
+            <%= link_to 'Ver', product_path(product, locale: I18n.locale), class: 'btn btn-info btn-sm' %>
+            <%= link_to 'Editar', edit_product_path(product, locale: I18n.locale), class: 'btn btn-warning btn-sm' %>
+            <%= link_to 'Deletar', product_path(product, locale: I18n.locale), method: :delete, data: { confirm: 'Tem certeza que deseja deletar este produto?' }, class: 'btn btn-danger btn-sm' %>
+          <% else %>
+            <span>Produto inválido</span>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

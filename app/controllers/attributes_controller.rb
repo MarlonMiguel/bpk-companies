@@ -8,6 +8,7 @@ class AttributesController < ApplicationController
 
   # GET /attributes/1 or /attributes/1.json
   def show
+    @attribute = Attribute.find(params[:id])
   end
 
   # GET /attributes/new
@@ -17,15 +18,16 @@ class AttributesController < ApplicationController
 
   # GET /attributes/1/edit
   def edit
+    @attribute = Attribute.find(params[:id])
   end
 
   # POST /attributes or /attributes.json
   def create
     @attribute = Attribute.new(attribute_params)
-
+  
     respond_to do |format|
       if @attribute.save
-        format.html { redirect_to @attribute, notice: "Attribute was successfully created." }
+        format.html { redirect_to attributes_path(locale: I18n.locale), notice: "Atributo foi criado com sucesso." }
         format.json { render :show, status: :created, location: @attribute }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -38,7 +40,7 @@ class AttributesController < ApplicationController
   def update
     respond_to do |format|
       if @attribute.update(attribute_params)
-        format.html { redirect_to @attribute, notice: "Attribute was successfully updated." }
+        format.html { redirect_to @attribute, notice: "Atributo alterado com sucesso." }
         format.json { render :show, status: :ok, location: @attribute }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -52,19 +54,17 @@ class AttributesController < ApplicationController
     @attribute.destroy!
 
     respond_to do |format|
-      format.html { redirect_to attributes_path, status: :see_other, notice: "Attribute was successfully destroyed." }
+      format.html { redirect_to attributes_path, status: :see_other, notice: "Atributo excluido com sucesso." }
       format.json { head :no_content }
     end
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
     def set_attribute
       @attribute = Attribute.find(params[:id])
     end
 
-    # Only allow a list of trusted parameters through.
     def attribute_params
-      params.require(:attribute).permit(:description, :type)
+      params.require(:attribute).permit(:description, :domain)
     end
 end

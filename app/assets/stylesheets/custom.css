@@ -1,0 +1,225 @@
+/* custom.css */
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden; /*Impede o scroll*/
+  height: 100%; /* Garante que a altura da página seja sempre 100% */
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+}
+
+.container {
+  max-width: 600px;
+  margin: auto;
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+#sidebar {
+  width: 280px; /* Ajuste a largura conforme necessário */
+  background-color: rgba(0, 0, 0, 0.5); /* Fundo transparente */
+  border-right: 1px solid #ddd; /* Borda opcional para separação */
+  position: fixed; /* Mantém o sidebar fixo ao rolar */
+  max-height: 100vh; /* Altura máxima para o sidebar igual à altura da tela */
+  overflow-y: auto; 
+  z-index: 2; /* Garante que o sidebar fique acima do conteúdo */
+}
+
+#sidebar .nav-link,
+#sidebar .dropdown-item {
+  font-size: 12px;
+  color: white;  /*Cor do texto para branco */
+}
+
+#sidebar .nav-link:hover,
+#sidebar .dropdown-item:hover {
+  color: white; /* Cor do texto ao passar o mouse */
+  background-color: #495057; /* Cor de fundo ao passar o mouse */
+}
+
+ul.nav {
+  padding: 0;
+  margin: 0;
+}
+
+ul.nav .nav-item {
+  margin-bottom: 10px; /* Espaçamento entre itens */
+}
+
+.dropdown-menu {
+  background-color: #343a40; /* Mantém o fundo escuro para o submenu */
+}
+
+.dropdown-item:hover {
+  background-color: #495057; /* Efeito de hover nos itens */
+}
+
+
+
+.container.container-manager-attributes {
+  max-width: 800px;
+  margin: auto;
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1, h2 {
+    color: #333;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="url"],
+input[type="file"],
+input[type="tel"],
+textarea {
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+input[type="submit"] {
+    background-color: #5cb85c;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+input[type="submit"]:hover {
+    background-color: #4cae4c;
+}
+
+.categories-table,
+.attributes-table,
+.users-table {
+    margin: 20px;
+}
+  
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th, .table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.table th {
+  background-color: #f2f2f2;
+}
+
+.btn {
+  padding: 8px 12px;
+  color: white;
+  text-decoration: none;
+  border-radius: 4px;
+}
+
+.btn-info {
+  background-color: #007bff;
+}
+
+.btn-success {
+  background-color: #28a745;
+}
+
+.content {
+  margin-left: 220px; 
+  padding: 15px;
+}
+
+.language-flag {
+  width: 20px; 
+  height: auto; 
+}
+
+.language-select {
+  margin-right: 15px;
+}
+
+.product-images {
+  display: flex; /* Usar flexbox para alinhar as imagens */
+  flex-wrap: wrap; /* Permitir que as imagens quebrem a linha */
+  gap: 10px; /* Espaçamento entre as imagens */
+}
+
+.image-wrapper {
+  border: 1px solid #ddd; /* Borda em volta da imagem */
+  padding: 5px; /* Espaçamento interno */
+  border-radius: 5px; /* Bordas arredondadas */
+  max-width: 100px; /* Largura máxima das imagens */
+}
+
+.image-wrapper img {
+  max-width: 100%; /* Assegura que a imagem não ultrapasse o contêiner */
+  height: auto; /* Mantém a proporção da imagem */
+}
+
+.manager-card {
+  width: 750px; /* Ajuste o valor conforme necessário */
+}
+
+.footer {
+  position: fixed; /* Fixa o rodapé */
+  bottom: 0; /* Posiciona na parte inferior */
+  left: 0; /* Alinha à esquerda */
+  width: 100%; /* Largura total */
+  background-color: #f8f9fa; /* Cor de fundo */
+  text-align: center; /* Alinha o texto ao centro */
+  z-index: 1000; /* Coloca o rodapé acima de outros elementos */
+}
+
+.devise-button {
+  height: 30px; 
+  padding: 5px
+}
+
+.footer {
+  background-color: #000; /* Preto */
+  color: #fff; /* Branco */
+  font-size: 0.8em; /* Ou o tamanho que você preferir */
+}
+
+.footer span {
+  color: #fff; /* Branco */
+}
+
+.footer .language-flag {
+  width: 32px;
+  height: auto;
+  margin-left: 10px;
+}
+
+.language-select img {
+  cursor: pointer;
+}
+
+.footer .text-start,
+.footer .text-end {
+  flex: 1;
+}

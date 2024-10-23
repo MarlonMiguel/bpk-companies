@@ -1,0 +1,104 @@
+<div class="container my-4">
+  <div class="row">
+    <div class="col-md-12">
+      <%= form_with(model: product, local: true, data: { controller: "image-preview product" }) do |form| %>
+        <div class="row">
+          <!-- Card 1: Formulário de Produto -->
+          <div class="col-md-6">
+            <div class="card">
+              <div class="card-header">
+                <h5><%= product.new_record? ? "Criar Produto" : "Editar Produto" %></h5>
+              </div>
+              <div class="card-body">
+                <!-- Upload de Imagens -->
+                <div class="mb-3">
+                  <%= form.label :images, "Imagens do produto", class: "form-label" %>
+                  <%= form.file_field :images, multiple: true, class: "form-control", data: { action: "change->image-preview#preview" } %>
+                </div>
+
+                <!-- Contêiner de Pré-visualização das Imagens -->
+                <div class="mb-3" data-image-preview-target="previewContainer">
+                  <!-- As miniaturas das imagens aparecerão aqui -->
+                </div>
+
+                <!-- Exibir imagens já salvas -->
+                <% if product.persisted? && product.images.attached? %>
+                  <div class="mb-3">
+                    <h5>Imagens Salvas:</h5>
+                    <div class="d-flex flex-wrap">
+                      <% product.images.each do |image| %>
+                        <div class="position-relative m-2" style="width: 80px; height: 80px;">
+                          <%= image_tag image, size: "80x80", class: "img-thumbnail" %>
+                          <%= form_with url: image_product_path(product, image.id, locale: I18n.locale), method: :delete, local: true do %>
+                            <%= submit_tag 'X', class: "btn btn-danger btn-sm position-absolute top-0 end-0", data: { confirm: 'Tem certeza que deseja excluir esta imagem?' }, style: "width: 20px; height: 20px; padding: 0; border-radius: 50%; line-height: 1;" %>
+                          <% end %>
+                        </div>
+                      <% end %>
+                    </div>
+                  </div>
+                <% end %>
+
+                <!-- Nome do Produto -->
+                <div class="mb-3">
+                  <%= form.label :name, "Nome do Produto", class: "form-label" %>
+                  <%= form.text_field :name, class: "form-control" %>
+                </div>
+                
+                <div class="mb-3">
+                  <%= form.label :price, "Preço" %>
+                  <%= form.number_field :price, step: 0.01, class: "form-control" %>
+                </div>
+
+                <!-- Prioridade (não editável) -->
+                <div class="mb-3">
+                  <%= form.label :priority, "Prioridade", class: "form-label" %>
+                  <%= form.number_field :priority, value: @next_priority, readonly: true, class: "form-control" %>
+                  <small class="form-text text-muted">A prioridade é atribuída automaticamente.</small>
+                </div>
+
+                <!-- Estado Ativo (sempre falso) -->
+                <div class="mb-3">
+                  <%= form.hidden_field :active, value: false %>
+                  <p class="form-control-plaintext">Ativo: <%= false %></p>
+                </div>
+
+                <!-- Seleção de Categoria -->
+                <div class="mb-3">
+                  <label for="category-select" class="form-label">Categoria</label>
+                  <select id="category-select" name="product[category_id]" class="form-select"
+                          data-controller="product" 
+                          data-action="change->product#fetchAttributes">
+                    <option value="">Selecione uma categoria</option>
+                    <% @categories.each do |category| %>
+                      <option value="<%= category.id %>" <%= 'selected' if category.id == @product.category_id %>>
+                        <%= category.description %>
+                      </option>
+                    <% end %>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 2: Atributos Dinâmicos -->
+          <div class="col-md-6">
+            <div class="card">
+              <div class="card-header">
+                <h5>Atributos da Categoria</h5>
+              </div>
+              <div class="card-body" id="attributesContainer">
+                <!-- Os campos de atributos dinâmicos serão adicionados aqui -->
+                <!-- Supondo que você está renderizando dinamicamente os campos de acordo com a categoria -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Botão de Submit -->
+        <div class="text-end mt-3">
+          <%= form.submit "Salvar Produto", class: "btn btn-success" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

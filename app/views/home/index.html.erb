@@ -1,0 +1,106 @@
+<% content_for :header do %>
+  <%= stylesheet_link_tag "carousel", media: "all", "data-turbo-track": "reload" %>
+<% end %>
+<!-- Navbar Vertical à Esquerda -->
+<body>
+<div id="sidebar" class="bg-dark">
+  <ul class="nav flex-column">
+    <li class="nav-item dropdown">
+      <a class="nav-link dropdown-toggle text-white" href="#" id="dropdownItem1" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        Imobiliário
+      </a>
+      <ul class="dropdown-menu bg-dark">
+        <li class="nav-item dropdown">
+          <%= link_to 'Venda', store_path(category: 'venda'), class: 'dropdown-item text-white' %>
+        </li>
+        <li class="nav-item dropdown">
+          <%= link_to 'Locação', store_path(category: 'locacao'), class: 'dropdown-item text-white' %>
+        </li>
+      </ul>
+    </li>
+    <li class="nav-item dropdown">
+      <a class="nav-link dropdown-toggle text-white" href="#" id="dropdownItem2" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        Educacional
+      </a>
+      <ul class="dropdown-menu bg-dark">
+        <li>
+          <%= link_to 'Treinamentos', store_path(category: 'treinamentos'), class: 'dropdown-item text-white' %>
+        </li>
+        <li>
+          <%= link_to 'Cursos', store_path(category: 'cursos'), class: 'dropdown-item text-white' %>
+        </li>
+      </ul>
+    </li>
+    <li>
+      <%= link_to 'Serviços', store_path(category: 'servicos'), class: 'dropdown-item text-white' %>
+    </li>
+    
+    <!-- Links de Admin -->
+    <% if user_signed_in? && current_user.admin? %>
+      <li class="nav-item">
+        <%= link_to 'Visualizar Categorias', categories_path, class: 'dropdown-item text-white' %>
+      </li>
+      <li class="nav-item">
+        <%= link_to 'Visualizar Atributos', attributes_path, class: 'dropdown-item text-white' %>
+      </li>
+      <li class="nav-item">
+        <%= link_to 'Visualizar Usuários', users_path, class: 'dropdown-item text-white' %>
+      </li>
+    <% end %>
+    <% if user_signed_in? %>
+      <li class="nav-item">
+        <%= link_to 'Visualizar Produto', products_path, class: 'dropdown-item text-white' %>
+      </li>
+    <% end%>
+  </ul>
+</div>
+
+<!-- Container para o Carousel -->
+<div class="carousel-container" style="height: 100vh; overflow: hidden;">
+  <div class="col-md-12">
+    <div id="carouselExample" class="carousel slide position-relative" data-bs-ride="carousel">
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+          <%= image_tag "slide1.jpg", class: "d-block w-100 carousel-image", alt: "Slide 1" %>
+          <div class="carousel-caption d-none d-md-block">
+            <h3>Bem-vindo ao Biopark Empreendimentos</h3>
+            <p>Descubra um mundo de oportunidades no Biopark, onde inovação e qualidade se encontram para transformar seus sonhos em realidade. Nossos produtos são projetados para atender suas necessidades com excelência e estilo. Venha explorar o que temos a oferecer!</p>
+          </div>
+        </div>
+        <div class="carousel-item">
+          <%= image_tag "slide2.jpg", class: "d-block w-100 carousel-image", alt: "Slide 2" %>
+          <div class="carousel-caption d-none d-md-block">
+            <h3>Setor Educacional</h3>
+            <p>Mantenha-se à frente no mundo do conhecimento! Explore nossos cursos e treinamentos inovadores que capacitam você a alcançar novos horizontes. Junte-se a nós e transforme sua carreira com as melhores oportunidades educacionais!</p>
+          </div>
+        </div>
+        <div class="carousel-item">
+          <%= image_tag "slide3.jpg", class: "d-block w-100 carousel-image", alt: "Slide 3" %>
+          <div class="carousel-caption d-none d-md-block">
+            <h3>Setor Imobiliário</h3>
+            <p>Explore um universo de oportunidades no setor imobiliário! Nossos imóveis são cuidadosamente selecionados para oferecer qualidade, conforto e uma experiência de vida excepcional. Venha realizar o sonho da casa perfeita com nossas melhores ofertas!</p>
+          </div>
+        </div>
+      </div>
+
+      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev" style="visibility: hidden;">
+        <span class="carousel-control-prev-icon" aria-hidden="true" style="width: 20px; height: 20px;"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+
+      <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next" style="visibility: hidden;">
+        <span class="carousel-control-next-icon" aria-hidden="true" style="width: 20px; height: 20px;"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
+
+      <!-- Botões de Ação -->
+      <div class="position-absolute top-0 end-0 p-3">
+        <% unless user_signed_in? %>
+          <%= link_to 'Entrar', new_user_session_path, class: 'btn btn-primary devise-button' %>
+          <%= link_to 'Cadastrar Novo Usuário', new_user_registration_path, class: 'btn btn-secondary ms-2 devise-button' %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+</body>

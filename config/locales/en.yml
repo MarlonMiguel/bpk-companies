@@ -28,4 +28,9 @@
 #       enabled: "ON"
 
 en:
-  hello: "Hello world"
+  lists:
+    list_of_categories: "List of categories"
+    list_of_subcategories: "List of subcategories"
+    list_of_sellers: "List of sellers"
+    list_of_products: "List of products"
+    list_of_attributes: "List of attributes"

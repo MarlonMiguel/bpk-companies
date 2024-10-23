@@ -1,27 +1,29 @@
-<%= form_with(model: attribute) do |form| %>
-  <% if attribute.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(attribute.errors.count, "error") %> prohibited this attribute from being saved:</h2>
 
-      <ul>
-        <% attribute.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
+<div class="container my-4">
+  <div class="card">
+    <div class="card-header">
+      <h5><%= attribute.new_record? ? "Criar Atributo" : "Editar Atributo" %></h5>
     </div>
-  <% end %>
+    <div class="card-body">
+      <%= form_with(model: attribute, 
+                    url: attribute.persisted? ? attribute_path(attribute, locale: I18n.locale) : 
+                    attributes_path(locale: I18n.locale), local: true) do |form| %>
 
-  <div>
-    <%= form.label :description, style: "display: block" %>
-    <%= form.text_field :description %>
-  </div>
+        <div>
+          <%= form.label :description, style: "display: block" %>
+          <%= form.text_field :description %>
+        </div>
 
-  <div>
-    <%= form.label :type, style: "display: block" %>
-    <%= form.text_field :type %>
-  </div>
+        <div class="mb-3">
+          <%= form.label :domain, "Tipo" %>
+          <%= form.select :domain, [['Moeda', 'N'], ['Número', 'I'], ['Texto', 'V']], {}, class: "form-select" %>
+        </div>
 
-  <div>
-    <%= form.submit %>
+        <div class="card-footer d-flex justify-content-between">
+          <%= form.submit "Salvar atributo" %>
+          <%= link_to "Voltar", attributes_path, class: "btn btn-secondary" %>
+        </div>
+      <% end %>
+    </div>
   </div>
-<% end %>
+</div>

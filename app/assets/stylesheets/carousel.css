@@ -1,0 +1,46 @@
+.carousel,
+.carousel-inner,
+.carousel-item {
+  width: 100vw; /* Preenche toda a largura da viewport */
+  height: 100vh; /* Preenche toda a altura da viewport */
+  overflow: hidden; /* Evita qualquer rolagem interna */
+}
+
+.carousel-item img {
+  object-fit: cover; /* Preenche o carrossel, pode cortar, mas se adapta */
+  width: 100%; /* Preenche horizontalmente */
+  height: 100vh; /* Preenche verticalmente */
+  object-position: center; /* Centraliza a imagem */
+}
+
+/* Controles */
+.carousel-control-prev,
+.carousel-control-next {
+  border: none;
+  background: none;
+}
+
+/* Legendas */
+.carousel-caption {
+  background-color: rgba(0, 0, 0, 0.5); /* Fundo transparente */
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.carousel-control {
+  width: 30px; /* Diminuir a largura dos botões */
+  height: 30px; /* Diminuir a altura dos botões */
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+  padding: 0.5rem; /* Reduz o padding */
+  height: auto; /* Garante que a altura seja automática */
+  line-height: 1; /* Ajusta a linha para centralizar texto */
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  width: 20px; /* Tamanho do ícone */
+  height: 20px; /* Tamanho do ícone */
+}
