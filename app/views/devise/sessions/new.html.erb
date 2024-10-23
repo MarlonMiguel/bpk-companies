@@ -1,17 +1,17 @@
 <div class="container mt-5">
   <div class="row justify-content-center">
     <div class="col-md-6">
-      <h2 class="text-center mb-4">Log in</h2>
+      <h2 class="text-center mb-4">Entrar</h2>
 
       <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: 'form' }) do |f| %>
         <div class="form-group mb-3">
           <%= f.label :email, class: 'form-label' %>
-          <%= f.email_field :email, autofocus: true, autocomplete: "email", class: 'form-control' %>
+          <%= f.email_field :email, autofocus: true, autocomplete: "email", class: 'form-control', aria: { required: true } %>
         </div>
 
         <div class="form-group mb-3">
           <%= f.label :password, class: 'form-label' %>
-          <%= f.password_field :password, autocomplete: "current-password", class: 'form-control' %>
+          <%= f.password_field :password, autocomplete: "current-password", class: 'form-control', aria: { required: true } %>
         </div>
 
         <% if devise_mapping.rememberable? %>
@@ -21,8 +21,13 @@
           </div>
         <% end %>
 
+        <!-- Adicionando o reCAPTCHA -->
+        <div class="mb-3">
+          <%= recaptcha_tags %>
+        </div>
+
         <div class="d-grid">
-          <%= f.submit "Log in", class: 'btn btn-primary' %>
+          <%= f.submit "Entrar", class: 'btn btn-primary' %>
         </div>
       <% end %>
 

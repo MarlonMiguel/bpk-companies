@@ -4,6 +4,8 @@ class Category < ApplicationRecord
 
     has_and_belongs_to_many :custom_attributes, class_name: 'Attribute', join_table: 'category_attributes'
     has_and_belongs_to_many :users
+
+    has_many :product_attribute_category_values
   
     validate :parent_cannot_be_self, if: -> { parent_id.present? }
 

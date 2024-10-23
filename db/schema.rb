@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_10_15_011248) do
+ActiveRecord::Schema[7.1].define(version: 2024_10_23_084809) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -72,10 +72,11 @@ ActiveRecord::Schema[7.1].define(version: 2024_10_15_011248) do
 
   create_table "product_attribute_category_values", force: :cascade do |t|
     t.bigint "product_id", null: false
-    t.bigint "category_attribute_id", null: false
     t.string "value"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "category_attribute_id"
+    t.integer "category_id"
     t.index ["category_attribute_id"], name: "idx_on_category_attribute_id_51ac096201"
     t.index ["product_id"], name: "index_product_attribute_category_values_on_product_id"
   end
@@ -96,6 +97,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_10_15_011248) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "user_id", null: false
+    t.decimal "price"
     t.index ["user_id"], name: "index_products_on_user_id"
   end
 
@@ -142,7 +144,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_10_15_011248) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "category_attributes", "attributes"
   add_foreign_key "category_attributes", "categories"
-  add_foreign_key "product_attribute_category_values", "category_attributes"
   add_foreign_key "product_attribute_category_values", "products"
   add_foreign_key "product_images", "products"
   add_foreign_key "products", "users"

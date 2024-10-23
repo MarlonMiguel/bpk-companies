@@ -1,15 +1,23 @@
 <div class="container d-flex justify-content-center align-items-center">
   <div class="row">
     <div class="col-lg-12">
-      <h2 class="text-center">Sign Up</h2>
+      <h2 class="text-center">Cadastrar</h2>
 
-      <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { multipart: true }) do |f| %>
+      <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { multipart: true }, data: { controller: "image-preview" }) do |f| %>
         <%= render "devise/shared/error_messages", resource: resource %>
         <!-- Foto de Perfil -->
-        <div class="mb-2">
-          <%= f.label :profile_picture, "Foto de Perfil", class: "form-label" %>
-          <%= f.file_field :profile_picture, class: "form-control" %>
+
+        <!-- Upload de Imagens -->
+        <div class="mb-3">
+          <%= f.label :profile_image, "Imagens do vendedor", class: "form-label" %>
+          <%= f.file_field :profile_image, multiple: false, class: "form-control", data: { action: "change->image-preview#preview" } %>
         </div>
+
+        <!-- Contêiner de Pré-visualização das Imagens -->
+        <div class="mb-3" data-image-preview-target="previewContainer">
+          <!-- As miniaturas das imagens aparecerão aqui -->
+        </div>
+ 
         <div class="row">
           <div class="col-lg-6">
             <!-- Nome -->

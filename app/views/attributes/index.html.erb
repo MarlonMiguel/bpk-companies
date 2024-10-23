@@ -1,6 +1,4 @@
-<p style="color: green"><%= notice %></p>
-
-<div id="attributes" class="categories-table">
+<div id="attributes" class="attributes-table">
   <h1><%= t('lists.list_of_attributes') %></h1>
   
   <table class="table">
@@ -30,5 +28,7 @@
     </tbody>
   </table>
 
-
-<%= link_to "New attribute", new_attribute_path(locale: I18n.locale) %>
+  <div class="actions">
+    <%= link_to "Novo Atributo", new_attribute_path(locale: I18n.locale), class: "btn btn-success" %>
+  </div>
+</div>

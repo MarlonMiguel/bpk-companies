@@ -67,6 +67,13 @@ gem 'dotenv-rails', groups: [:development, :test]
 
 gem 'pg', '~> 1.2'
 
-gem 'bootstrap', '~> 5.1.3'
+#gem 'bootstrap', '~> 5.1.3'
 
 gem 'devise'
+
+gem 'image_processing', '~> 1.2'
+
+gem 'recaptcha', require: 'recaptcha/rails'
+
+gem "cssbundling-rails", "~> 1.4"
+

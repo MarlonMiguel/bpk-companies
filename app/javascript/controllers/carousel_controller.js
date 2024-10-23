@@ -15,6 +15,7 @@ export default class extends Controller {
 
   startAutoSlide() {
     setInterval(() => {
+      console.log('acessou');
       this.carousel.next(); // Avança para o próximo slide
     }, 3000); // Define o intervalo de tempo
   }

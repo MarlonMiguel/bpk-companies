@@ -27,7 +27,7 @@ class CategoriesController < ApplicationController
   
     respond_to do |format|
       if @category.save
-        format.html { redirect_to category_path(@category, locale: I18n.locale), notice: "Category was successfully created." }
+        format.html { redirect_to categories_path(locale: I18n.locale), notice: "Categoria criada com sucesso." }
         format.json { render :show, status: :created, location: @category }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -38,15 +38,14 @@ class CategoriesController < ApplicationController
 
   # PATCH/PUT /categories/1 or /categories/1.json
   def update
-    @category = Category.find(params[:id])
-    puts "Antes de atualizar: #{@category.inspect}"
-  
-    if @category.update(category_params)
-      puts "Atualização bem-sucedida: #{@category.inspect}"
-      redirect_to @category, notice: 'Categoria atualizada com sucesso.'
-    else
-      puts "Erro ao atualizar: #{@category.errors.full_messages.join(', ')}"
-      render :edit, status: :unprocessable_entity
+    respond_to do |format|
+      if @category.update(category_params)
+        format.html { redirect_to @category, notice: "Categoria alterada com sucesso." }
+        format.json { render :show, status: :ok, location: @category }
+      else
+        format.html { render :edit, status: :unprocessable_entity }
+        format.json { render json: @category.errors, status: :unprocessable_entity }
+      end
     end
   end
 
@@ -55,13 +54,13 @@ class CategoriesController < ApplicationController
     @category.destroy!
 
     respond_to do |format|
-      format.html { redirect_to categories_path, status: :see_other, notice: "Category was successfully destroyed." }
+      format.html { redirect_to categories_path, status: :see_other, notice: "Categoria excluida com sucesso." }
       format.json { head :no_content }
     end
   end
 
   def manage_attributes
-    @category = Category.find(params[:id]) # Carrega a categoria pelo id
+    @category = Category.find(params[:id]) 
     @available_attributes = Attribute.where.not(id: @category.custom_attributes.ids)
     @category_attributes = @category.custom_attributes
   end
@@ -75,13 +74,31 @@ class CategoriesController < ApplicationController
       @category.custom_attributes = Attribute.where(id: attribute_ids)
   
       if @category.save
-        redirect_to categories_path(locale: I18n.locale), notice: 'Attributes were successfully updated.'
+        redirect_to categories_path(locale: I18n.locale), notice: 'Editado com sucesso.'
       else
-        render :edit, alert: 'Error updating attributes.'
+        render :edit, alert: 'Erro ao editar.'
       end
     else
-      redirect_to categories_path(locale: I18n.locale), alert: 'No attributes selected.'
+      redirect_to categories_path(locale: I18n.locale), alert: 'Atributo não selecionado.'
     end
+  end
+
+  # def attributes
+  #   @attributes = Category.find(params[:id]).attributes
+  #   render json: @attributes
+  # end
+
+  def attributes
+    category = Category.find(params[:id])
+    attributes = category.custom_attributes  # Isso assume que a relação está correta
+    
+    render json: attributes.map { |attribute| 
+      { 
+        id: attribute.id, 
+        description: attribute.description, 
+        type: attribute.domain  # Alterado para usar o campo 'domain'
+      }
+    }
   end
 
   private

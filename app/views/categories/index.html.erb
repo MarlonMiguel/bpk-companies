@@ -1,11 +1,3 @@
-<% if notice %>
-  <div class="alert alert-success"><%= notice %></div>
-<% end %>
-
-<% if alert %>
-  <div class="alert alert-danger"><%= alert %></div>
-<% end %>
-
 <div id="categories" class="categories-table">
   <h1><%= t('lists.list_of_categories') %></h1>
   
@@ -38,6 +30,6 @@
   </table>
   
   <div class="actions">
-    <%= link_to "Nova Categoria", new_category_path, class: "btn btn-success" %>
+    <%= link_to "Nova Categoria", new_category_path(locale: I18n.locale), class: "btn btn-success" %>
   </div>
 </div>

@@ -21,6 +21,7 @@
         <p class="mb-1"><strong>Prioridade:</strong> <%= product.priority || 'Não definida' %></p>
         <p class="mb-1"><strong>Status:</strong> <%= product.active ? 'Ativo' : 'Inativo' %></p>
         <p class="mb-1"><strong>Categoria:</strong> <%= product.category_id || 'Sem categoria' %></p>
+        <p class="mb-1"><strong>Valor:</strong> <%= number_to_currency(product.price) || 'Sem Valor' %></p>
       </div>
     </div>
     <div class="card-footer d-flex justify-content-between">

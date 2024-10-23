@@ -2,6 +2,7 @@ class ProductsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_product, only: %i[ show edit update destroy ]
   before_action :authorize_user!, only: %i[ edit update destroy ]
+  before_action :set_categories, only: [:new, :create, :edit, :update]
 
   # GET /products or /products.json
   def index
@@ -24,7 +25,8 @@ class ProductsController < ApplicationController
 
   # GET /products/1/edit
   def edit
-    @categories = Category.all # Carregue as categorias para o select
+    @product = Product.find(params[:id])
+    @categories = Category.all
   end
 
   # POST /products or /products.json
@@ -33,12 +35,28 @@ class ProductsController < ApplicationController
 
     respond_to do |format|
       if @product.save
-        format.html { redirect_to @product, notice: "Product was successfully created." }
+        save_dynamic_attributes(params[:product][:attributes])
+        format.html { redirect_to products_path, notice: "Produto criado com sucesso." } # Redireciona para o index
         format.json { render :show, status: :created, location: @product }
       else
-        format.html { render :new, status: :unprocessable_entity }
+        #@categories = Category.all
+        format.html { render :new }
         format.json { render json: @product.errors, status: :unprocessable_entity }
       end
+    end
+  end
+
+  def save_dynamic_attributes(attributes)
+    return unless attributes.present?
+  
+    category_id = @product.category_id 
+  
+    attributes.each do |attribute_id, value|
+      @product.product_attribute_category_values.create(
+        category_id: category_id,
+        category_attribute_id: attribute_id, 
+        value: value
+      )
     end
   end
 
@@ -82,6 +100,10 @@ class ProductsController < ApplicationController
       @product = Product.find(params[:id])
     end
 
+    def set_categories
+      @categories = Category.all # ou o método que você usa para obter as categorias
+    end
+
     # Verificar se o usuário tem permissão para editar ou excluir
     def authorize_user!
       unless current_user.admin? || @product.user == current_user
@@ -91,6 +113,6 @@ class ProductsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def product_params
-      params.require(:product).permit(:name, :priority, :active, :category_id, images: [])
+      params.require(:product).permit(:name, :price, :priority, :active, :category_id, images: [])
     end
 end

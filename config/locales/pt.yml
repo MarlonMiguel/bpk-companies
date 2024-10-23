@@ -46,3 +46,10 @@ pt:
         not_saved: "não foi salvo devido a erros"
         blank: "não pode ficar em branco"
 
+  devise:
+    sessions:
+      signed_in: "Login realizado com sucesso."
+      signed_out: "Você foi desconectado com sucesso."
+      user:
+        signed_out: "Obrigado por utilizar o sistema."
+

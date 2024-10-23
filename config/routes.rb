@@ -1,6 +1,10 @@
 Rails.application.routes.draw do
+  get 'store', to: 'pages#store'
   get 'users/index'
-  devise_for :users
+
+  devise_for :users, controllers: {
+    sessions: 'users/sessions'
+  }
 
   scope "(:locale)", locale: /en|pt/ do
     root 'home#index'
@@ -8,6 +12,7 @@ Rails.application.routes.draw do
     resources :categories do
       member do
         get 'manage_attributes'  
+        get 'attributes', to: 'categories#attributes'
         patch 'update_attributes' 
       end
     end
@@ -20,7 +25,6 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :sellers
     resources :attributes
     
     resources :products do
