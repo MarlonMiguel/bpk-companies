@@ -2,27 +2,32 @@ version: '3.8'
 
 services:
   web:
-    build: .
-    volumes:
-      - .:/rails
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
       - "3000:3000"
-    environment:
-      DATABASE_URL: postgres://postgres:password@db:5432/mydatabase
     depends_on:
       - db
-    command: ["./bin/dev"]
+    environment:
+      RAILS_ENV: test  # Adiciona a variável de ambiente para testes
+      DATABASE_NAME: biopark_companies
+      DATABASE_USER: postgres
+      DATABASE_PASSWORD: root
+      DATABASE_HOST: db
+      DATABASE_PORT: 5432
+    command: >
+      bash -c "until nc -z db 5432; do sleep 1; done && ./bin/rails db:create db:migrate && ./bin/rails server -b 0.0.0.0"
 
+  
   db:
-    image: postgres:latest
+    image: postgres:14
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: mydatabase
-    ports:
-      - "5432:5432"
-    volumes:
-      - pg_data:/var/lib/postgresql/data
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: biopark_companies
 
 volumes:
-  pg_data:
+  postgres_data:
