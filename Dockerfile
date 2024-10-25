@@ -1,9 +1,9 @@
 # syntax = docker/dockerfile:1
 
-# Use uma imagem base do Ubuntu
-FROM ubuntu:22.04
+# Use uma imagem base do Ruby
+FROM ruby:3.3.1
 
-# Instale as dependências do sistema
+# Instale dependências do sistema
 RUN apt-get update -qq && \
     apt-get install -y \
     curl \
@@ -15,32 +15,34 @@ RUN apt-get update -qq && \
     libvips \
     nodejs \
     npm \
-    && rm -rf /var/lib/apt/lists/*
+    netcat-openbsd && \
+    rm -rf /var/lib/apt/lists/*  # Remover listas de pacotes
 
-# Instale Ruby
-RUN apt-get install -y ruby-full
-
-# Instale o Bundler
-RUN gem install bundler
+# Instale o Yarn
+RUN curl -o- -L https://yarnpkg.com/install.sh | bash && \
+    ln -s /root/.yarn/bin/yarn /usr/local/bin/yarn && \
+    ln -s /root/.yarn/bin/yarnpkg /usr/local/bin/yarnpkg
 
 # Defina o diretório de trabalho
 WORKDIR /rails
 
-# Copie o Gemfile e o Gemfile.lock e instale as gems
-COPY Gemfile Gemfile.lock ./
-RUN bundle install
-
 # Copie o código da aplicação
 COPY . .
 
-# Instale as dependências do npm
-RUN npm install
+# Crie o arquivo .env temporariamente
+RUN echo "DATABASE_NAME=biopark_companies" >> .env && \
+    echo "DATABASE_USER=postgres" >> .env && \
+    echo "DATABASE_PASSWORD=root" >> .env && \
+    echo "DATABASE_HOST=localhost" >> .env && \
+    echo "DATABASE_PORT=5432" >> .env && \
+    echo "RECAPTCHA_SITE_KEY=6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI" >> .env && \
+    echo "RECAPTCHA_SECRET_KEY=6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe" >> .env
 
-# Precompile assets (se necessário)
-RUN SECRET_KEY_BASE_DUMMY=1 ./bin/rails assets:precompile
+# Instale as gems do Ruby
+RUN bundle install
+
+# Instale as dependências do Yarn
+RUN yarn install
 
 # Exponha a porta padrão do Rails
 EXPOSE 3000
-
-# Comando para iniciar o servidor Rails
-CMD ["./bin/dev"]
