@@ -1,0 +1,38 @@
+.container {
+    max-width: 950px;
+    margin: auto;
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+input[type="text"],
+input[type="email"],
+input[type="url"],
+input[type="file"],
+input[type="tel"],
+input[type="password"]
+textarea {
+    padding: 5px;
+    margin-bottom: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 12px;
+} 
+
+.card {
+    max-width: 100%; /* Max largura do card */
+}
+  
+.preview-container {
+    width: 300px; /* Largura fixa */
+    height: 300px; /* Altura fixa */
+    display: flex;
+    justify-content: center; /* Centraliza a imagem horizontalmente */
+    align-items: center; /* Centraliza a imagem verticalmente */
+    overflow: hidden; /* Esconde a parte da imagem que ultrapassar o contêiner */
+    border-radius: 50%; /* Bordas arredondadas para o contêiner */
+    border: 1px solid #ddd; /* Opcional: borda ao redor do contêiner */
+    margin: auto; /* Centraliza o contêiner dentro do card */
+}

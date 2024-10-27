@@ -1,4 +1,4 @@
-<div class="container my-4">
+<div class="container">
   <div class="card">
     <div class="card-body">
       <%= form_with url: store_path, method: :get, local: true do %>
@@ -21,51 +21,50 @@
         </div>
         
         <div class="text-end">
-          <%= submit_tag 'Filtrar', class: 'btn btn-primary' %>
+          <%= submit_tag 'Filtrar', class: 'btn btn-sm btn-primary' %>
         </div>
       <% end %>
     </div>
   </div>
-</div>
-
-<div class="container my-4">
-  <div class="row">
-    <% @products.in_groups_of(4, false).each do |product_group| %>
-      <div class="row mb-4">
-        <% product_group.each do |product| %>
-          <div class="col-md-3">
-            <div class="card h-100">
-              <!-- Exibir a primeira imagem do produto -->
-              <% if product.images.any? %>
-                <%= image_tag product.images.first, class: "card-img-top", alt: product.name %>
-              <% else %>
-                <%= image_tag 'default_image.png', class: "card-img-top", alt: 'Imagem padrão' %>
-              <% end %>
-
-              <!-- Informações do Produto -->
-              <div class="card-body">
-                <h5 class="card-title"><%= product.name %></h5>
-
-                <!-- Atributos do Produto -->
-                <% product.product_attribute_category_values.each do |attribute| %>
-                  <p class="card-text"><%= attribute.value %></p>
+  <div class="card mt-2">
+    <div class="row">
+      <% @products.in_groups_of(4, false).each do |product_group| %>
+        <div class="row mb-4">
+          <% product_group.each do |product| %>
+            <div class="col-md-3">
+              <div class="card h-100">
+                <!-- Exibir a primeira imagem do produto -->
+                <% if product.images.any? %>
+                  <%= image_tag product.images.first, class: "card-img-top", alt: product.name %>
+                <% else %>
+                  <%= image_tag 'default_image.png', class: "card-img-top", alt: 'Imagem padrão' %>
                 <% end %>
 
-                <!-- Tag de Categoria -->
-                <div class="mt-2">
-                  <span class="badge bg-primary"><%= product.category.description %></span>
+                <!-- Informações do Produto -->
+                <div class="card-body">
+                  <h5 class="card-title"><%= product.name %></h5>
+
+                  <!-- Atributos do Produto -->
+                  <% product.product_attribute_category_values.each do |attribute| %>
+                    <p class="card-text"><%= attribute.value %></p>
+                  <% end %>
+
+                  <!-- Tag de Categoria -->
+                  <div class="mt-2">
+                    <span class="badge bg-primary"><%= product.category.description %></span>
+                  </div>
+                </div>
+
+                <!-- Informações do Vendedor -->
+                <div class="card-footer">
+                  <h6>Vendedor: <%= product.user.name %></h6>
+                  <p>Contato: <%= product.user.phone %></p>
                 </div>
               </div>
-
-              <!-- Informações do Vendedor -->
-              <div class="card-footer">
-                <h6>Vendedor: <%= product.user.name %></h6>
-                <p>Contato: <%= product.user.phone %></p>
-              </div>
             </div>
-          </div>
-        <% end %>
-      </div>
-    <% end %>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
   </div>
 </div>

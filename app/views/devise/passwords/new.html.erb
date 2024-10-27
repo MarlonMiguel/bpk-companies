@@ -15,8 +15,9 @@
       </div>
     <% end %>
 
-    <div class="text-center mt-3">
-      <%= render "devise/shared/links" %>
+    <div class="mt-3">
+      <%= link_to "Entrar", new_session_path(resource_name) %><br />
+      <%= link_to "Cadastrar-se", new_registration_path(resource_name) %><br />
     </div>
   </div>
 </div>

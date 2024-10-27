@@ -40,7 +40,7 @@ pt:
       models:
         user:
           attributes:
-            profile_picture:
+            profile_image:
               blank: "não pode ficar em branco"
       messages:
         not_saved: "não foi salvo devido a erros"
