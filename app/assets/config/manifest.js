@@ -6,3 +6,4 @@
 //= link store.css
 //= link custom.css
 //= link carousel.css
+//= link registrations.css

@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   get 'users/index'
 
   devise_for :users, controllers: {
+    registrations: 'users/registrations',
     sessions: 'users/sessions'
   }
 
@@ -19,9 +20,10 @@ Rails.application.routes.draw do
 
     resources :users do
       member do
-        patch 'toggle_active' 
+        patch 'update'
         get 'manage_categories'
-        patch 'update_categories'
+        post 'update_categories'
+        patch 'toggle_active'
       end
     end
 

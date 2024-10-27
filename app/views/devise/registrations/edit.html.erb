@@ -1,68 +1,85 @@
-<div class="container d-flex justify-content-center align-items-center">
-  <div class="row">
-    <div class="col-lg-12">
-      <h2 class="text-center">Editar <%= resource_name.to_s.humanize %></h2>
+<% content_for :header do %>
+  <%= stylesheet_link_tag 'registrations', media: 'all' %>
+<% end %>
 
-      <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put, multipart: true }, data: { controller: "image-preview" }) do |f| %>
-        <%= render "devise/shared/error_messages", resource: resource %>
+<div class="d-flex mt-5 justify-content-center align-items-start min-vh-100">
+  <%= form_for(resource, as: resource_name, url: user_registration_path(resource_name), html: { multipart: true, method: :patch, data: { controller: "image-preview" } }) do |f| %>
+    <%= render "devise/shared/error_messages", resource: resource %>
 
-        <!-- Upload de Imagem de Perfil -->
-        <div class="mb-3">
-          <%= f.label :profile_image, "Imagem de Perfil", class: "form-label" %>
-          <%= f.file_field :profile_image, class: "form-control", data: { action: "change->image-preview#preview" } %>
+    <!-- Contêiner para os Cards -->
+    <div class="d-flex">
+      <!-- Primeiro Card -->
+      <div class="card shadow-sm border-0" style="width: 100%; max-width: 900px; margin-right: 20px;">
+        <div class="card-header">
+          <h4 class="text-center mb-2">Editar Perfil do Vendedor</h4>
+        </div>
+        <div class="card-body">
+          <!-- Nome e Telefone -->
+          <div class="row">
+            <div class="col-md-6 mb-2">
+              <%= f.label :name, "Nome", class: "form-label fw-bold" %>
+              <%= f.text_field :name, value: resource.name, autofocus: true, class: "form-control" %>
+            </div>
+            <div class="col-md-6 mb-2">
+              <%= f.label :phone, "Telefone", class: "form-label fw-bold" %>
+              <%= f.telephone_field :phone, value: resource.phone, class: "form-control" %>
+            </div>
+          </div>
+
+          <!-- E-mail -->
+          <div class="mb-2">
+            <%= f.label :email, "E-mail", class: "form-label fw-bold" %>
+            <%= f.email_field :email, value: resource.email, autocomplete: "email", class: "form-control" %>
+          </div>
+
+          <!-- Senha -->
+          <div class="mb-2">
+            <%= f.label :password, "Senha", class: "form-label fw-bold" %>
+            <% if @minimum_password_length %>
+              <small class="text-muted">(<%= @minimum_password_length %> caracteres mínimo)</small>
+            <% end %>
+            <%= f.password_field :password, autocomplete: "new-password", class: "form-control" %>
+          </div>
+
+          <!-- Confirmação de Senha -->
+          <div>
+            <%= f.label :password_confirmation, "Confirme a Senha", class: "form-label fw-bold" %>
+            <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "form-control" %>
+          </div>
         </div>
 
-        <!-- Contêiner de Pré-visualização da Imagem -->
-        <div class="mb-3" data-image-preview-target="previewContainer">
-          <img id="profile_image_preview" src="<%= resource.profile_image.attached? ? url_for(resource.profile_image.variant(resize_to_limit: [150, 150])) : '' %>" class="img-thumbnail" style="display: <%= resource.profile_image.attached? ? 'block' : 'none' %>;" width="150" height="150">
+        <div class="card-footer mb-2">
+          <!-- Links e Botão Salvar -->
+          <div class="d-flex justify-content-between align-items-center mt-2">
+            <div>
+              <%= link_to "Cancelar", edit_user_registration_path, class: "btn btn-link" %>
+            </div>
+            <%= f.submit "Salvar Alterações", class: "btn btn-primary" %>
+          </div>
         </div>
+      </div>
 
-        <!-- Campo de E-mail -->
-        <div class="mb-2">
-          <%= f.label :email, class: "form-label" %>
-          <%= f.email_field :email, autofocus: true, class: "form-control", autocomplete: "email" %>
+      <!-- Segundo Card -->
+      <div class="card shadow-sm border-0" style="width: 100%; max-width: 600px;">
+        <div class="card-body">
+          <!-- Contêiner de Pré-visualização das Imagens -->
+          <div class="preview-container mt-4" data-image-preview-target="previewContainer">
+            <!-- Verifica se o usuário possui uma imagem de perfil salva e exibe-a -->
+            <% if resource.profile_image.present? %>
+              <%= image_tag resource.profile_image, alt: 'Imagem do Perfil', class: 'default-image', style: 'width: 100%; height: 100%; object-fit: cover; border-radius: 50%;' %>
+            <% else %>
+              <%= image_tag 'default_profile_image.png', alt: 'Imagem Padrão', class: 'default-image', style: 'width: 100%; height: 100%; object-fit: cover; border-radius: 50%;' %>
+            <% end %>
+          </div>
         </div>
-
-        <!-- Validação de Confirmação de E-mail -->
-        <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
-          <div class="alert alert-info">Aguardando confirmação para: <%= resource.unconfirmed_email %></div>
-        <% end %>
-
-        <!-- Campo de Senha -->
-        <div class="mb-2">
-          <%= f.label :password, class: "form-label" %> <i>(Deixe em branco se você não quiser mudá-la)</i><br />
-          <%= f.password_field :password, class: "form-control", autocomplete: "new-password" %>
-          <% if @minimum_password_length %>
-            <small class="form-text text-muted"><em><%= @minimum_password_length %> caracteres no mínimo</em></small>
-          <% end %>
+        <div class="card-footer mb-2">
+          <!-- Upload de Imagens -->
+          <div>
+            <%= f.label :profile_image, "Imagem do Perfil", class: "form-label fw-bold" %>
+            <%= f.file_field :profile_image, multiple: false, class: "form-control", data: { action: "change->image-preview#preview" } %>
+          </div>
         </div>
-
-        <!-- Campo de Confirmação de Senha -->
-        <div class="mb-2">
-          <%= f.label :password_confirmation, class: "form-label" %><br />
-          <%= f.password_field :password_confirmation, class: "form-control", autocomplete: "new-password" %>
-        </div>
-
-        <!-- Campo de Senha Atual para Confirmar Mudanças -->
-        <div class="mb-4">
-          <%= f.label :current_password, class: "form-label" %> <i>(Precisamos da sua senha atual para confirmar as alterações)</i><br />
-          <%= f.password_field :current_password, class: "form-control", autocomplete: "current-password" %>
-        </div>
-
-        <!-- Botão de Atualizar -->
-        <div class="text-center mb-3">
-          <%= f.submit "Atualizar", class: "btn btn-primary" %>
-        </div>
-      <% end %>
-
-      <!-- Link para Cancelar Conta -->
-      <h3>Cancelar minha conta</h3>
-      <div>Descontente? <%= button_to "Cancelar minha conta", registration_path(resource_name), data: { confirm: "Você tem certeza?", turbo_confirm: "Você tem certeza?" }, method: :delete, class: "btn btn-danger" %></div>
-
-      <!-- Link para Voltar -->
-      <div class="mt-3">
-        <%= link_to "Voltar", :back, class: "btn btn-secondary" %>
       </div>
     </div>
-  </div>
+  <% end %>
 </div>

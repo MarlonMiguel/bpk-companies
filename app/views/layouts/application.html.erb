@@ -20,21 +20,24 @@
     <!-- Renderiza mensagens de flash -->
     <%= render 'shared/flash_messages' %> 
 
-    <!-- Renderiza o conteúdo principal da view (ex: carousel) -->
-    <%= yield %>
-    <% if user_signed_in? %>
-      <div class="d-flex justify-content-end" style="background-color: transparent; padding: 0; margin: 0; position: absolute; top: 10px; right: 10px; z-index: 1000;">
+    <div class="d-flex justify-content-end" style="background-color: transparent; padding: 0; margin: 0; position: absolute; top: 10px; right: 10px; z-index: 1000;">
+      <% unless current_page?(root_path) %>
         <%= link_to content_tag(:i, '', class: 'bi bi-house-door-fill btn btn-sm btn-secondary me-2'), root_path, class: 'nav-link' %>
-        <%= link_to content_tag(:i, 'Logout', class: 'btn btn-sm btn-danger ms-2'), destroy_user_session_path %>
+      <% end %>
+      
+      <% if user_signed_in? %>
+        <%= button_to 'Logout', destroy_user_session_path(locale: I18n.locale), method: :delete, data: { confirm: 'Tem certeza que deseja sair?' }, class: 'btn btn-sm btn-danger' %>
+        
         <% if current_user.profile_image.attached? %>
           <%= link_to image_tag(current_user.profile_image.variant(resize_to_limit: [30, 30]), class: "rounded-circle", style: "width: 35px; height: 35px; object-fit: cover; margin-left: 10px;"), edit_user_registration_path %>
         <% else %>
           <%= link_to image_tag('default_profile_image.png', class: "rounded-circle", style: "width: 25px; height: 25px; object-fit: cover; margin-left: 10px;"), edit_user_registration_path %>
         <% end %>
-      </div>
-    <% end %>
+      <% end %>
+    </div>
 
-
+    <!-- Renderiza o conteúdo principal da view (ex: carousel) -->
+    <%= yield %>
     <!-- Rodapé fixo -->
     <footer class="footer custom-footer">
       <div class="container-fluid">

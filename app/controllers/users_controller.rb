@@ -1,15 +1,19 @@
 class UsersController < ApplicationController
-  before_action :authenticate_user! 
+  before_action :authenticate_user!
   before_action :authorize_admin!
   before_action :admin_only
   before_action :set_user, only: [:toggle_active, :manage_categories, :update_categories]
 
+  devise :database_authenticatable, :registerable,
+         :recoverable, :rememberable, :validatable
+
+  validates :password, presence: true, on: :create
+  validates :password, allow_blank: true, confirmation: true, length: { minimum: 6 }, if: :password_required?
 
   def index
     @users = User.all 
   end
 
-  # GET /products/1 or /products/1.json
   def show
     @user = User.find(params[:id])
   end
@@ -27,31 +31,30 @@ class UsersController < ApplicationController
   end  
 
   def toggle_active
-    @user = User.find(params[:id])
+    @user.active = !@user.active
 
-    if @user
-      @user.active = !@user.active
-
-      if @user.save
-        redirect_to users_path, notice: 'Status alterado com sucesso.'
-      else
-        redirect_to users_path, alert: 'Erro ao alterar status.'
-      end
+    if @user.save
+      redirect_to users_path, notice: 'Status alterado com sucesso.'
     else
-      redirect_to users_path, alert: 'Usuário não encontrado.'
+      redirect_to users_path, alert: 'Erro ao alterar status.'
     end
   end
- 
+
   private
-    def authorize_admin!
-      redirect_to root_path, alert: 'Você não tem permissão para acessar esta página.' unless current_user.admin?
-    end
 
-    def admin_only
-      redirect_to(root_path, alert: "Acesso negado!") unless current_user.admin?
-    end
+  def authorize_admin!
+    redirect_to root_path, alert: 'Você não tem permissão para acessar esta página.' unless current_user.admin?
+  end
 
-    def set_user
-      @user = User.find(params[:id])
-    end
+  def admin_only
+    redirect_to(root_path, alert: "Acesso negado!") unless current_user.admin?
+  end
+
+  def set_user
+    @user = User.find(params[:id])
+  end
+
+  def password_required?
+    new_record? || changes[:encrypted_password].present?
+  end
 end

@@ -1,63 +1,82 @@
-<div class="container d-flex justify-content-center align-items-center">
-  <div class="row">
-    <div class="col-lg-12">
-      <h2 class="text-center">Cadastrar</h2>
+<% content_for :header do %>
+  <%= stylesheet_link_tag 'registrations', media: 'all' %>
+<% end %>
 
-      <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { multipart: true }, data: { controller: "image-preview" }) do |f| %>
-        <%= render "devise/shared/error_messages", resource: resource %>
-        <!-- Foto de Perfil -->
+<div class="d-flex mt-5 justify-content-center align-items-start min-vh-100">
+  <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { multipart: true }, data: { controller: "image-preview" }) do |f| %>
+    <%= render "devise/shared/error_messages", resource: resource %>
 
-        <!-- Upload de Imagens -->
-        <div class="mb-3">
-          <%= f.label :profile_image, "Imagens do vendedor", class: "form-label" %>
-          <%= f.file_field :profile_image, multiple: false, class: "form-control", data: { action: "change->image-preview#preview" } %>
+    <!-- Contêiner para os Cards -->
+    <div class="d-flex">
+      <!-- Primeiro Card -->
+      <div class="card shadow-sm border-0" style="width: 100%; max-width: 900px; margin-right: 20px;">
+        <div class="card-header">
+          <h4 class="text-center mb-2">Cadastrar Vendedor</h4>
         </div>
-
-        <!-- Contêiner de Pré-visualização das Imagens -->
-        <div class="mb-3" data-image-preview-target="previewContainer">
-          <!-- As miniaturas das imagens aparecerão aqui -->
-        </div>
- 
-        <div class="row">
-          <div class="col-lg-6">
-            <!-- Nome -->
-            <%= f.label :name, "Nome", class: "form-label" %>
-            <%= f.text_field :name, autofocus: true, class: "form-control" %>
+        <div class="card-body">
+          <!-- Nome e Telefone -->
+          <div class="row">
+            <div class="col-md-6 mb-2">
+              <%= f.label :name, "Nome", class: "form-label fw-bold" %>
+              <%= f.text_field :name, autofocus: true, class: "form-control" %>
+            </div>
+            <div class="col-md-6 mb-2">
+              <%= f.label :phone, "Telefone", class: "form-label fw-bold" %>
+              <%= f.telephone_field :phone, class: "form-control" %>
+            </div>
           </div>
-          <div class="col-lg-6">
-            <!-- Telefone -->
-            <%= f.label :phone, "Telefone", class: "form-label" %>
-            <%= f.telephone_field :phone, class: "form-control" %>
+
+          <!-- E-mail -->
+          <div class="mb-2">
+            <%= f.label :email, "E-mail", class: "form-label fw-bold" %>
+            <%= f.email_field :email, autocomplete: "email", class: "form-control" %>
+          </div>
+
+          <!-- Senha -->
+          <div class="mb-2">
+            <%= f.label :password, "Senha", class: "form-label fw-bold" %>
+            <% if @minimum_password_length %>
+              <small class="text-muted">(<%= @minimum_password_length %> caracteres mínimo)</small>
+            <% end %>
+            <%= f.password_field :password, autocomplete: "new-password", class: "form-control" %>
+          </div>
+
+          <!-- Confirmação de Senha -->
+          <div>
+            <%= f.label :password_confirmation, "Confirme a Senha", class: "form-label fw-bold" %>
+            <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "form-control" %>
           </div>
         </div>
-        <!-- E-mail -->
-        <div class="mb-2">
-          <%= f.label :email, class: "form-label" %>
-          <%= f.email_field :email, autocomplete: "email", class: "form-control" %>
+
+        <div class="card-footer mb-2">
+          <!-- Links e Botão Salvar -->
+          <div class="d-flex justify-content-between align-items-center mt-2">
+            <div>
+              <%= render "devise/shared/links" %>
+            </div>
+            <%= f.submit "Salvar", class: "btn btn-primary" %>
+          </div>
+        </div>
+      </div>
+
+      <!-- Segundo Card -->
+      <div class="card shadow-sm border-0" style="width: 100%; max-width: 600px;">
+        <div class="card-body">
+          <!-- Contêiner de Pré-visualização das Imagens -->
+          <div class="preview-container mt-4" data-image-preview-target="previewContainer">
+            <!-- A imagem aparecerá aqui -->
+            <%= image_tag 'default_profile_image.png', alt: 'Imagem Padrão', class: 'default-image', style: 'width: 100%; height: 100%; object-fit: cover; border-radius: 50%;' %>
+          </div>
+        </div>
+        <div class="card-footer mb-2">
+          <!-- Upload de Imagens -->
+          <div>
+            <%= f.label :profile_image, "Imagem do Perfil", class: "form-label fw-bold" %>
+            <%= f.file_field :profile_image, multiple: false, class: "form-control", data: { action: "change->image-preview#preview" } %>
+          </div>
         </div>
 
-        <!-- Senha -->
-        <div class="mb-2">
-          <%= f.label :password, class: "form-label" %>
-          <% if @minimum_password_length %>
-            <em>(<%= @minimum_password_length %> characters minimum)</em>
-          <% end %>
-          <%= f.password_field :password, autocomplete: "new-password", class: "form-control" %>
-        </div>
-
-        <!-- Confirmação de Senha -->
-        <div class="mb-4">
-          <%= f.label :password_confirmation, class: "form-label" %>
-          <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "form-control" %>
-        </div>
-
-        <!-- Botão de Envio -->
-        <div class="text-center mb-3">
-          <%= f.submit "Sign up", class: "btn btn-primary" %>
-        </div>
-      <% end %>
-
-      <%= render "devise/shared/links" %>
+      </div>
     </div>
-  </div>
+  <% end %>
 </div>
