@@ -4,12 +4,6 @@ class UsersController < ApplicationController
   before_action :admin_only
   before_action :set_user, only: [:toggle_active, :manage_categories, :update_categories]
 
-  devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :validatable
-
-  validates :password, presence: true, on: :create
-  validates :password, allow_blank: true, confirmation: true, length: { minimum: 6 }, if: :password_required?
-
   def index
     @users = User.all 
   end
