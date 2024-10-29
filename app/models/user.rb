@@ -11,6 +11,8 @@ class User < ApplicationRecord
   validates :role, inclusion: { in: ROLES }
   validates :name, presence: true
   validates :phone, presence: true
+  validates :password, presence: true, on: :create
+  validates :password, allow_blank: true, confirmation: true, length: { minimum: 6 }, if: :password_required?
 
   def admin?
     role == 'admin' 
