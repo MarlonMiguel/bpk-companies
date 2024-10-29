@@ -32,6 +32,7 @@ Rails.application.routes.draw do
     resources :products do
       member do
         delete 'images/:image_id', to: 'products#destroy_image', as: 'image'
+        patch 'toggle_active'
       end
     end
   end

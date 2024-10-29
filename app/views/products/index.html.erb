@@ -1,34 +1,44 @@
-<h1>Lista de Produtos</h1>
+<div id="products" class="products-table">
+  <h1>Lista de Produtos</h1>
 
-<%= link_to 'Cadastrar Novo Produto', new_product_path, class: 'btn btn-success mb-3' %> 
 
-<table class="table">
-  <thead>
-    <tr>
-      <th>Nome do Produto</th>
-      <th>Vendedor</th>
-      <th>Prioridade</th>
-      <th>Ativo</th>
-      <th>Ações</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @products.each do |product| %>
+  <table class="table">
+    <thead>
       <tr>
-        <td><%= product.name %></td>
-        <td><%= product.user.name %></td> 
-        <td><%= product.priority %></td> 
-        <td><%= product.active %></td> 
-        <td>
-          <% if product.id.present? %>
-            <%= link_to 'Ver', product_path(product, locale: I18n.locale), class: 'btn btn-info btn-sm' %>
-            <%= link_to 'Editar', edit_product_path(product, locale: I18n.locale), class: 'btn btn-warning btn-sm' %>
-            <%= link_to 'Deletar', product_path(product, locale: I18n.locale), method: :delete, data: { confirm: 'Tem certeza que deseja deletar este produto?' }, class: 'btn btn-danger btn-sm' %>
-          <% else %>
-            <span>Produto inválido</span>
-          <% end %>
-        </td>
+        <th>Nome do Produto</th>
+        <th>Vendedor</th>
+        <th>Prioridade</th>
+        <th>Ativo</th>
+        <th>Ações</th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+      <% @products.each do |product| %>
+        <tr>
+          <td><%= product.name %></td>
+          <td><%= product.user.name %></td> 
+          <td><%= product.priority %></td> 
+          <td><%= product.active %></td> 
+          <td>
+            <% if product.id.present? %>
+              <%= form_with url: toggle_active_product_path(product.id, locale: I18n.locale), method: :patch, class: 'd-inline' do %>
+                <%= submit_tag 'Alterar status produto', class: 'btn btn-sm btn-primary', data: { confirm: 'Tem certeza que deseja alterar o status?' } %>
+              <% end %>
+              <%= link_to 'Ver', product_path(product, locale: I18n.locale), class: 'btn btn-info btn-sm' %>
+              <%= link_to 'Editar', edit_product_path(product, locale: I18n.locale), class: 'btn btn-warning btn-sm' %>
+              <%= link_to "Excluir", product_path(product, locale: I18n.locale), 
+                method: :delete, 
+                data: { turbo_method: :delete, turbo_confirm: "Tem certeza que deseja excluir esta categoria?" }, 
+                class: "btn btn-danger" %>  
+            <% else %>
+              <span>Produto inválido</span>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <div class="actions">
+    <%= link_to 'Cadastrar Novo Produto', new_product_path, class: 'btn btn-success mb-3' %> 
+  </div>
+</div>

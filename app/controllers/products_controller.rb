@@ -1,8 +1,8 @@
 class ProductsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_product, only: %i[ show edit update destroy ]
   before_action :authorize_user!, only: %i[ edit update destroy ]
   before_action :set_categories, only: [:new, :create, :edit, :update]
+  before_action :set_product, only: [:show, :edit, :update, :destroy, :toggle_active]
 
   # GET /products or /products.json
   def index
@@ -15,6 +15,7 @@ class ProductsController < ApplicationController
 
   # GET /products/1 or /products/1.json
   def show
+    @product = Product.find(params[:id])
   end
 
   # GET /products/new
@@ -75,11 +76,18 @@ class ProductsController < ApplicationController
 
   # DELETE /products/1 or /products/1.json
   def destroy
-    @product.destroy!
-
-    respond_to do |format|
-      format.html { redirect_to products_path, status: :see_other, notice: "Product was successfully destroyed." }
-      format.json { head :no_content }
+    @product = Product.find(params[:id]) # Busca o produto com base no ID passado
+  
+    if @product.destroy # Tenta destruir o produto
+      respond_to do |format|
+        format.html { redirect_to products_path, status: :see_other, notice: "Produto excluído com sucesso." }
+        format.json { head :no_content }
+      end
+    else
+      respond_to do |format|
+        format.html { redirect_to products_path, alert: "Erro ao excluir o produto." }
+        format.json { render json: { error: "Erro ao excluir o produto." }, status: :unprocessable_entity }
+      end
     end
   end
 
@@ -91,6 +99,21 @@ class ProductsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to @product, notice: "Imagem foi excluída com sucesso." }
       format.json { head :no_content }
+    end
+  end
+
+  def toggle_active
+    @product = Product.find_by(id: params[:id])
+  
+    if @product.nil?
+      redirect_to products_path, alert: 'Produto não encontrado.'
+    else
+      @product.active = !@product.active
+      if @product.save
+        redirect_to products_path, notice: 'Status alterado com sucesso.'
+      else
+        redirect_to products_path, alert: 'Erro ao alterar status do produto.'
+      end
     end
   end
 
