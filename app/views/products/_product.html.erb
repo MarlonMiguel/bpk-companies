@@ -1,32 +1,93 @@
-<div id="<%= dom_id product %>" class="container mt-4"> 
-  <div class="card shadow-lg"> 
-    <div class="card-header bg-primary text-white text-center"> 
-      <h3 class="mb-0"><%= product.name %></h3> 
-    </div>
+<% content_for :header do %>
+  <%= stylesheet_link_tag 'product-show', media: 'all' %>
+<% end %>
 
-    <div class="card-body text-center"> 
-      <% if @product.images.attached? %>
-        <div class="product-images d-flex justify-content-center flex-wrap"> 
-          <% @product.images.each do |image| %>
-            <div class="image-wrapper position-relative m-2"> 
-              <%= image_tag image, size: "150x150", alt: "Imagem do produto", class: "img-thumbnail" %> 
+<div id="<%= dom_id product %>" class="container mt-4" data-controller="product">
+  <div class="row">
+    <!-- Card de Imagens (à esquerda) -->
+    <div class="col-md-8 d-flex">
+      <div class="card shadow-lg mb-4 h-100 w-100" style="min-height: 500px;">
+        <div class="card-body">
+          <% if @product.images.attached? %>
+            <!-- Galeria de Imagens -->
+            <div class="row h-100">
+              <!-- Miniaturas (Lista Vertical) -->
+              <div class="col-4 col-sm-3">
+                <div class="thumbnail-list h-100">
+                  <% @product.images.each do |image| %>
+                    <div class="thumbnail-item mb-2" data-action="click->product#changeMainImage">
+                      <%= image_tag image, class: "img-thumbnail img-thumbnail-fixed", alt: "Miniatura do produto" %>
+                    </div>
+                  <% end %>
+                </div>
+              </div>
+
+              <!-- Imagem Principal -->
+              <div class="col-8 col-sm-9 h-100">
+                <%= image_tag @product.images.first, 
+                  data: { product_target: "mainImage", action: "click->product#openModal" }, 
+                  class: "w-100 h-100 main-image img-main-fixed", 
+                  alt: "Imagem principal do produto" %>
+              </div>
             </div>
+          <% else %>
+            <p class="text-muted">Nenhuma imagem disponível</p>
           <% end %>
         </div>
-      <% else %>
-        <p class="text-muted">Nenhuma imagem disponível</p> 
-      <% end %>
-
-      <div class="mt-4">
-        <p class="mb-1"><strong>Prioridade:</strong> <%= product.priority || 'Não definida' %></p>
-        <p class="mb-1"><strong>Status:</strong> <%= product.active ? 'Ativo' : 'Inativo' %></p>
-        <p class="mb-1"><strong>Categoria:</strong> <%= product.category_id || 'Sem categoria' %></p>
-        <p class="mb-1"><strong>Valor:</strong> <%= number_to_currency(product.price) || 'Sem Valor' %></p>
       </div>
     </div>
-    <div class="card-footer d-flex justify-content-between">
-      <%= link_to 'Editar', edit_product_path(@product, locale: I18n.locale), class: "btn btn-primary" %>
-      <%= link_to 'Voltar', products_path(locale: I18n.locale), class: "btn btn-secondary" %>
+
+    <!-- Card de Informações (à direita) -->
+    <div class="col-md-4 d-flex">
+      <div class="card shadow-lg info-card w-100" style="min-height: 500px;">
+        <div class="card-body">
+          <h3 class="mb-0"><%= product.name %></h3>
+          <div class="mt-4">
+            <span class="badge <%= product.active ? 'bg-success' : 'bg-danger' %>">
+              <%= product.active ? 'Ativo' : 'Inativo' %>
+            </span>
+            <span class="badge bg-primary">
+              <%= product.category&.description || 'Sem categoria' %>
+            </span>
+            <p class="mb-1"><strong>Valor:</strong> <%= number_to_currency(product.price, unit: "R$", separator: ",", delimiter: ".") || 'Sem Valor' %></p>
+          </div>
+          <div class="mt-4">
+            <p class="mb-1"><strong>Vendedor:</strong> <%= product.user.name %></p>
+            <p class="mb-1">
+              <strong>Telefone:</strong> 
+              <%= product.user.phone %>
+              <!-- Ícone do WhatsApp como link -->
+              <%= link_to '<i class="bi bi-whatsapp text-success" style="font-size: 1.5rem;"></i>'.html_safe, 
+                          "https://wa.me/#{product.user.phone}?text=Olá%20#{ERB::Util.url_encode(product.user.name)},%20tenho%20interesse%20no%20produto%20#{ERB::Util.url_encode(product.name)}.", 
+                          target: "_blank", 
+                          rel: "noopener", 
+                          class: "ms-2" %>
+            </p>
+            <p class="mb-1"><strong>Email:</strong> <%= product.user.email %></p>
+          </div>
+        </div>
+
+        <div class="card-footer d-flex justify-content-between">
+          <% if user_signed_in? %>
+            <%= link_to 'Editar', edit_product_path(@product, locale: I18n.locale), class: "btn btn-primary" %>
+          <% end %>
+          <%= link_to 'Voltar', user_signed_in? ? products_path(locale: I18n.locale) : store_path(category_id: product.category.id, locale: I18n.locale), class: "btn btn-secondary" %>
+        </div>
+      </div>
     </div>
+  </div>
+  
+  <!-- Modal para Visualização em Zoom -->
+  <div id="imageModal" class="modal" data-product-target="imageModal" data-action="click->product#closeModal">
+    <span class="modal-content">
+      <% if @product.images.attached? %>
+        <%= image_tag @product.images.first, 
+          data: { product_target: "zoomedImage" }, 
+          id: "zoomedImage", 
+          alt: "Imagem em zoom" %>
+      <% else %>
+        <p class="text-muted">Nenhuma imagem disponível para visualização em zoom.</p>
+      <% end %>
+    </span>
   </div>
 </div>

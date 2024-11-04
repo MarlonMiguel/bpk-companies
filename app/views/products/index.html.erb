@@ -1,10 +1,10 @@
 <div id="products" class="products-table">
   <h1>Lista de Produtos</h1>
 
-
   <table class="table">
     <thead>
       <tr>
+        <th>Código do Produto</th>
         <th>Nome do Produto</th>
         <th>Vendedor</th>
         <th>Prioridade</th>
@@ -15,10 +15,11 @@
     <tbody>
       <% @products.each do |product| %>
         <tr>
+          <td><%= product.id %></td>
           <td><%= product.name %></td>
           <td><%= product.user.name %></td> 
           <td><%= product.priority %></td> 
-          <td><%= product.active %></td> 
+          <td><%= product.active ? 'Sim' : 'Não' %></td> 
           <td>
             <% if product.id.present? %>
               <%= form_with url: toggle_active_product_path(product.id, locale: I18n.locale), method: :patch, class: 'd-inline' do %>
@@ -29,7 +30,7 @@
               <%= link_to "Excluir", product_path(product, locale: I18n.locale), 
                 method: :delete, 
                 data: { turbo_method: :delete, turbo_confirm: "Tem certeza que deseja excluir esta categoria?" }, 
-                class: "btn btn-danger" %>  
+                class: "btn btn-sm btn-danger" %>  
             <% else %>
               <span>Produto inválido</span>
             <% end %>
@@ -38,6 +39,29 @@
       <% end %>
     </tbody>
   </table>
+    <!-- Paginação -->
+  <div class="pagination">
+    <ul class="pagination justify-content-center">
+      <% if @page > 1 %>
+        <li class="page-item">
+          <%= link_to '«', products_path(page: @page - 1, locale: I18n.locale), class: 'page-link' %>
+        </li>
+      <% end %>
+
+      <% (1..@total_pages).each do |p| %>
+        <li class="page-item <%= 'active' if p == @page %>">
+          <%= link_to p, products_path(page: p, locale: I18n.locale), class: 'page-link' %>
+        </li>
+      <% end %>
+
+      <% if @page < @total_pages %>
+        <li class="page-item">
+          <%= link_to '»', products_path(page: @page + 1, locale: I18n.locale), class: 'page-link' %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+
   <div class="actions">
     <%= link_to 'Cadastrar Novo Produto', new_product_path, class: 'btn btn-success mb-3' %> 
   </div>

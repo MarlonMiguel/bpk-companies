@@ -7,3 +7,6 @@
 //= link custom.css
 //= link carousel.css
 //= link registrations.css
+//= link category.css
+//= link product.css
+//= link product-show.css

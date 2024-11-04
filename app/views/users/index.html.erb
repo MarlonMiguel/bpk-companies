@@ -1,43 +1,66 @@
-<h1>Lista de usuários</h1>
 <div id="users" class="users-table">
-    <table class="table">
-    <thead>
-        <tr>
-        <th>Nome</th>
-        <th>Telefone</th>
-        <th>E-mail</th>
-        <th>Tipo usuário</th>
-        <th>Categorias</th>
-        <th>Status</th>
-        <th>Ações</th>
-        </tr>
-    </thead>
-    <tbody>
-        <% @users.each do |user| %>
-        <tr>
-            <td><%= user.name %></td>
-            <td><%= user.phone %></td>
-            <td><%= user.email %></td>
-            <td><%= user.role %></td>
+    <h1>Lista de usuários</h1>
+    <div id="users" class="users-table">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Telefone</th>
+                    <th>E-mail</th>
+                    <th>Tipo usuário</th>
+                    <th>Categorias</th>
+                    <th>Status</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% @users.each do |user| %>
+                <tr>
+                    <td><%= user.name %></td>
+                    <td><%= user.phone %></td>
+                    <td><%= user.email %></td>
+                    <td><%= user.role %></td>
 
-            <td>
-                <% user.categories.each do |category| %>
-                    <span class="badge bg-primary"><%= category.description %></span>
+                    <td>
+                        <% user.categories.each do |category| %>
+                            <span class="badge bg-primary"><%= category.description %></span>
+                        <% end %>
+                    </td>
+                    
+                    <td>
+                        <%= user.active? ? 'Ativo' : 'Inativo' %>
+                    </td>
+                    <td>
+                        <%= form_with url: toggle_active_user_path(user.id, locale: I18n.locale), method: :patch, class: 'd-inline' do %>
+                            <%= submit_tag 'Alterar status vendedor', class: 'btn btn-sm btn-primary', data: { confirm: 'Tem certeza que deseja alterar o status?' } %>
+                        <% end %>
+                        <%= link_to 'Gerenciar categorias', manage_categories_user_path(user, locale: I18n.locale), class: "btn btn-warning" %>
+                        <%= link_to 'Visualizar', user_path(user, locale: I18n.locale), class: "btn btn-sm btn-primary" %>
+                    </td>
+                </tr>
                 <% end %>
-            </td>
-            
-            <td>
-            <%= user.active? ? 'Ativo' : 'Inativo' %>
-            </td>
-            <td>
-                <%= form_with url: toggle_active_user_path(user.id, locale: I18n.locale), method: :patch, class: 'd-inline' do %>
-                    <%= submit_tag 'Alterar status vendedor', class: 'btn btn-sm btn-primary', data: { confirm: 'Tem certeza que deseja alterar o status?' } %>
-                <% end %>
-                <%= link_to 'Gerenciar categorias', manage_categories_user_path(user, locale: I18n.locale), class: "btn btn-warning" %>
-                <%= link_to "Visualizar", user_path(user, locale: I18n.locale), class: 'btn btn-sm btn-primary' %>  <!-- O link passa o ID do usuário -->
-            </td>
-        </tr>
-        <% end %>
-    </tbody>
-    </table>
+            </tbody>
+        </table>
+        <div class="pagination">
+            <ul class="pagination justify-content-center">
+            <% if @page > 1 %>
+                <li class="page-item">
+                <%= link_to '«', users_path(page: @page - 1, locale: I18n.locale), class: 'page-link' %>
+                </li>
+            <% end %>
+
+            <% (1..@total_pages).each do |p| %>
+                <li class="page-item <%= 'active' if p == @page %>">
+                <%= link_to p, users_path(page: p, locale: I18n.locale), class: 'page-link' %>
+                </li>
+            <% end %>
+
+            <% if @page < @total_pages %>
+                <li class="page-item">
+                <%= link_to '»', users_path(page: @page + 1, locale: I18n.locale), class: 'page-link' %>
+                </li>
+            <% end %>
+            </ul>
+        </div>
+    </div>
 </div>

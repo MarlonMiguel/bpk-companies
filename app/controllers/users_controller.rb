@@ -5,7 +5,11 @@ class UsersController < ApplicationController
   before_action :set_user, only: [:toggle_active, :manage_categories, :update_categories]
 
   def index
-    @users = User.all 
+    @per_page = 6 
+    @page = params[:page].to_i > 0 ? params[:page].to_i : 1
+    @users = User.limit(@per_page).offset((@page - 1) * @per_page)   
+    @total_users = User.count
+    @total_pages = (@total_users / @per_page.to_f).ceil
   end
 
   def show

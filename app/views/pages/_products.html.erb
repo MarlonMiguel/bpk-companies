@@ -1,70 +1,122 @@
-<div class="container">
-  <div class="card">
-    <div class="card-body">
-      <%= form_with url: store_path, method: :get, local: true do %>
-        <div class="mb-2 row">
-          <div class="col-md-12">
-            <%= label_tag :name, 'Filtrar por Nome' %>
-            <%= text_field_tag :name, params[:name], class: 'form-control' %>
-          </div>
-        </div>
+<% content_for :header do %>
+  <%= stylesheet_link_tag 'store', media: 'all' %>
+<% end %>
 
-        <div class="mb-2 row">
-          <div class="col-md-6">
-            <%= label_tag :min_price, 'Preço Mínimo' %>
-            <%= number_field_tag :min_price, params[:min_price], class: 'form-control' %>
+<div class="row">
+  <div class="col-md-2 custom-margin-top"> <!-- Margem superior personalizada -->
+    <div class="card mb-4">
+      <div class="card-body">
+        <%= form_with url: store_path, method: :get, local: true do %>
+          <%= hidden_field_tag 'category_ids[]', nil %>
+          <%= render_categories(@categories_filter, 0, [], nil, @product_counts) %> <!-- Passa as contagens para o helper -->
+          <div class="text-end mt-3">
+            <%= submit_tag 'Filtrar', class: 'btn btn-sm btn-primary' %>
           </div>
-          <div class="col-md-6">
-            <%= label_tag :max_price, 'Preço Máximo' %>
-            <%= number_field_tag :max_price, params[:max_price], class: 'form-control' %>
-          </div>
-        </div>
-        
-        <div class="text-end">
-          <%= submit_tag 'Filtrar', class: 'btn btn-sm btn-primary' %>
-        </div>
-      <% end %>
+        <% end %>
+      </div>
     </div>
   </div>
-  <div class="card mt-2">
-    <div class="row">
-      <% @products.in_groups_of(4, false).each do |product_group| %>
-        <div class="row mb-4">
-          <% product_group.each do |product| %>
-            <div class="col-md-3">
-              <div class="card h-100">
-                <!-- Exibir a primeira imagem do produto -->
-                <% if product.images.any? %>
-                  <%= image_tag product.images.first, class: "card-img-top", alt: product.name %>
-                <% else %>
-                  <%= image_tag 'default_image.png', class: "card-img-top", alt: 'Imagem padrão' %>
-                <% end %>
 
-                <!-- Informações do Produto -->
-                <div class="card-body">
-                  <h5 class="card-title"><%= product.name %></h5>
+  <!-- Container principal para filtros adicionais e exibição dos produtos -->
+  <div class="col-md-10 mt-5">
+    <div class="container">
 
-                  <!-- Atributos do Produto -->
-                  <% product.product_attribute_category_values.each do |attribute| %>
-                    <p class="card-text"><%= attribute.value %></p>
-                  <% end %>
-
-                  <!-- Tag de Categoria -->
-                  <div class="mt-2">
-                    <span class="badge bg-primary"><%= product.category.description %></span>
-                  </div>
-                </div>
-
-                <!-- Informações do Vendedor -->
-                <div class="card-footer">
-                  <h6>Vendedor: <%= product.user.name %></h6>
-                  <p>Contato: <%= product.user.phone %></p>
-                </div>
-              </div>
-            </div>
-          <% end %>
+      <%= form_with url: store_path, method: :get, local: true do %>
+        <div class="mb-1 row">
+          <div class="col-md-6">
+            <%= text_field_tag :name, params[:name], class: 'form-control form-control-underline', placeholder: 'Filtrar por Nome' %>
+          </div>
+          <div class="col-md-3">
+            <%= number_field_tag :min_price, params[:min_price], class: 'form-control form-control-underline', placeholder: 'Preço Mínimo' %>
+          </div>
+          <div class="col-md-3">
+            <%= number_field_tag :max_price, params[:max_price], class: 'form-control form-control-underline', placeholder: 'Preço Máximo' %>
+          </div>
+        </div>
+        <div class="text-end">
+          <%= submit_tag 'Filtrar', class: 'btn btn-sm btn-primary mb-2' %>
         </div>
       <% end %>
+
+
+      <!-- Exibição dos produtos -->
+      <div class="card">
+        <div class="card-body">
+          <div class="row">
+            <% @products.in_groups_of(4, false).each do |product_group| %>
+              <div class="row mb-4">
+                <% product_group.each do |product| %>
+                  <div class="col-md-3">
+                    <%= link_to product_path(product, locale: I18n.locale), class: 'text-decoration-none' do %>
+                      <div class="card h-100">
+                        <% if product.images.any? %>
+                          <div id="carousel-<%= product.id %>" class="carousel slide" data-bs-interval="false"> <!-- Desativar autoplay -->
+                            <div class="carousel-inner">
+                              <% product.images.each_with_index do |image, index| %>
+                                <div class="carousel-item <%= 'active' if index.zero? %>">
+                                  <%= image_tag image, class: "d-block w-100 img-fluid", style: "object-fit: cover; height: 200px;", alt: product.name %> <!-- Ajustar a imagem -->
+                                </div>
+                              <% end %>
+                            </div>
+                            <button class="carousel-control-prev" type="button" data-bs-target="#carousel-<%= product.id %>" data-bs-slide="prev">
+                              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                              <span class="visually-hidden">Previous</span>
+                            </button>
+                            <button class="carousel-control-next" type="button" data-bs-target="#carousel-<%= product.id %>" data-bs-slide="next">
+                              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                              <span class="visually-hidden">Next</span>
+                            </button>
+                          </div>
+                        <% else %>
+                          <%= image_tag 'default_image.png', class: "card-img-top", style: "object-fit: cover; height: 200px;", alt: 'Imagem padrão' %> <!-- Ajustar a imagem padrão -->
+                        <% end %>
+
+                        <div class="card-body">
+                          <div class="mt-2">
+                            <%= render_category_badges(product.category) %>
+                          </div>
+                          <h5 class="card-title"><%= product.name %></h5>
+                          <% product.product_attribute_category_values.each do |attribute| %>
+                            <p class="card-text"><%= attribute.value %></p>
+                          <% end %>
+                        </div>
+
+                        <div class="card-footer">
+                          <h6>Vendedor: <%= product.user.name %></h6>
+                          <p>Contato: <%= product.user.phone %></p>
+                        </div>
+                      </div>
+                    <% end %>
+                  </div>
+                <% end %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
+
+<!-- Script para seleção de categorias pai/filha -->
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    document.querySelectorAll('.parent-category').forEach(function(parentCheckbox) {
+      parentCheckbox.addEventListener('change', function() {
+        const categoryId = this.dataset.categoryId;
+        const isChecked = this.checked;
+
+        // Função para selecionar ou desmarcar as subcategorias recursivamente
+        function toggleSubcategories(parentId, checked) {
+          document.querySelectorAll(`.form-check-input[data-parent-id='${parentId}']`).forEach(function(subCheckbox) {
+            subCheckbox.checked = checked;
+            toggleSubcategories(subCheckbox.dataset.categoryId, checked); // Chamada recursiva para subcategorias aninhadas
+          });
+        }
+
+        // Inicializa a função com a categoria pai atual
+        toggleSubcategories(categoryId, isChecked);
+      });
+    });
+  });
+</script>

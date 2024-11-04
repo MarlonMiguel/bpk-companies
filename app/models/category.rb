@@ -1,5 +1,6 @@
 class Category < ApplicationRecord
     has_many :subcategories, class_name: 'Category', foreign_key: 'parent_id', dependent: :destroy
+    has_many :products
     belongs_to :parent, class_name: 'Category', optional: true
 
     has_and_belongs_to_many :custom_attributes, class_name: 'Attribute', join_table: 'category_attributes'
@@ -7,8 +8,6 @@ class Category < ApplicationRecord
 
     has_many :product_attribute_category_values
   
-    validate :parent_cannot_be_self, if: -> { parent_id.present? }
-
     validate :parent_cannot_be_self, if: -> { parent_id.present? }
 
     private

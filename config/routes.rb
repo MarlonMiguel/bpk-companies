@@ -20,9 +20,10 @@ Rails.application.routes.draw do
 
     resources :users do
       member do
-        patch 'update'
+        get 'show' 
         get 'manage_categories'
-        post 'update_categories'
+        patch 'update_categories'
+        patch 'update'
         patch 'toggle_active'
       end
     end
