@@ -77,7 +77,7 @@
                 <h5>Atributos da Categoria</h5>
               </div>
               <div class="card-body" id="attributesContainer">
-                <% if @categories.count == 1 %>
+                <% if @categories.count == 1 && @categories.first.attributes.any? %>
                   <% attributes = @categories.first.attributes %>
                   <% attributes.each do |attribute| %>
                     <div class="mb-3">
@@ -85,11 +85,13 @@
                       <%= text_field_tag "product[attributes_attributes][#{attribute.id}]", nil, class: "form-control" %>
                     </div>
                   <% end %>
+                <% else %>
+                  <p>Nenhum atributo disponível para esta categoria.</p>
                 <% end %>
               </div>
             </div>
           </div>
-        </div>
+        </div>  
 
         <!-- Botão de Submit -->
         <div class="mt-3 d-flex justify-content-between">
