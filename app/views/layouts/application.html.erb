@@ -29,9 +29,9 @@
         <%= button_to 'Logout', destroy_user_session_path(locale: I18n.locale), method: :delete, data: { confirm: 'Tem certeza que deseja sair?' }, class: 'btn btn-sm btn-danger' %>
         
         <% if current_user.profile_image.attached? %>
-          <%= link_to image_tag(current_user.profile_image.variant(resize_to_limit: [30, 30]), class: "rounded-circle", style: "width: 35px; height: 35px; object-fit: cover; margin-left: 10px;"), edit_user_registration_path %>
+          <%= link_to image_tag(current_user.profile_image.variant(resize_to_limit: [30, 30]), class: "rounded-circle", style: "width: 35px; height: 35px; object-fit: cover; margin-left: 10px;"), edit_user_registration_path(id: current_user.id, locale: I18n.locale) %>
         <% else %>
-          <%= link_to image_tag('default_profile_image.png', class: "rounded-circle", style: "width: 25px; height: 25px; object-fit: cover; margin-left: 10px;"), edit_user_registration_path %>
+          <%= link_to image_tag('default_profile_image.png', class: "rounded-circle", style: "width: 25px; height: 25px; object-fit: cover; margin-left: 10px;"), edit_user_registration_path(id: current_user.id, locale: I18n.locale) %>
         <% end %>
       <% end %>
     </div>

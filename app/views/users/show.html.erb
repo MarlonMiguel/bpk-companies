@@ -1,34 +1,52 @@
-<!-- app/views/users/show.html.erb -->
-<div class="container mt-4"> 
-  <div class="card shadow-lg"> 
-    <!-- Cabeçalho com o Nome do Usuário -->
-    <div class="card-header bg-primary text-white text-center"> 
-      <h3 class="mb-0"><%= @user.name %></h3> 
-    </div>
+<% content_for :header do %>
+  <%= stylesheet_link_tag 'registrations', media: 'all' %>
+<% end %>
 
-    <!-- Corpo com a Imagem e Informação do Usuário -->
-    <div class="card-body text-center"> 
-      <% if @user.profile_image.attached? %>
-        <!-- Exibe a Imagem de Perfil com redimensionamento -->
-        <%= image_tag @user.profile_image.variant(resize_to_limit: [150, 150]), class: "img-thumbnail" %>
-      <% else %>
-        <p>Sem imagem de perfil</p>
-      <% end %>
-    </div>
+<div class="d-flex mt-5 justify-content-center align-items-start min-vh-100">
+  <div class="d-flex">
+    <!-- Primeiro Card -->
+    <div class="card shadow-sm border-0" style="width: 100%; max-width: 900px; margin-right: 20px;">
+      <div class="card-header">
+        <h4 class="text-center mb-2">Perfil do Vendedor</h4>
+      </div>
+      <div class="card-body">
+        <!-- Nome e Telefone -->
+        <div class="row">
+          <div class="col-md-6 mb-2">
+            <%= content_tag :strong, "Nome" %>
+            <p><%= @user.name %></p>
+          </div>
+          <div class="col-md-6 mb-2">
+            <%= content_tag :strong, "Telefone" %>
+            <p><%= @user.phone %></p>
+          </div>
+        </div>
 
-    <!-- Exibição do Email -->
-    <div class="card-header bg-primary text-white text-center"> 
-      <h3 class="mb-0"><%= @user.email %></h3> 
-    </div>
+        <!-- E-mail -->
+        <div class="mb-2">
+          <%= content_tag :strong, "E-mail" %>
+          <p><%= @user.email %></p>
+        </div>
 
-    <!-- Exibição do Telefone -->
-    <div class="card-header bg-primary text-white text-center"> 
-      <h3 class="mb-0"><%= @user.phone %></h3> 
-    </div>
-
-    <!-- Rodapé com os Botões -->
-    <div class="card-footer d-flex justify-content-between">
-      <%= link_to 'Voltar', users_path(locale: I18n.locale), class: "btn btn-secondary" %>
+        <!-- Imagem de Perfil -->
+        <div class="mb-2">
+          <%= content_tag :strong, "Imagem do Perfil" %>
+          <div class="preview-container mt-2">
+            <% if @user.profile_image.present? %>
+              <%= image_tag @user.profile_image, alt: 'Imagem do Perfil', class: 'default-image', style: 'width: 100%; height: auto; object-fit: cover; border-radius: 50%;' %>
+            <% else %>
+              <%= image_tag 'default_profile_image.png', alt: 'Imagem Padrão', class: 'default-image', style: 'width: 100%; height: auto; object-fit: cover; border-radius: 50%;' %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+      
+      <div class="card-footer mb-2">
+        <!-- Link para retornar -->
+        <div class="d-flex justify-content-end">
+          <%= link_to "Voltar", users_path, class: "btn btn-secondary" %>
+        </div>
+      </div>
     </div>
   </div>
 </div>

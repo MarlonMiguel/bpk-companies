@@ -52,4 +52,12 @@ pt:
       signed_out: "Você foi desconectado com sucesso."
       user:
         signed_out: "Obrigado por utilizar o sistema."
+    failure:
+      already_authenticated: "Você já está autenticado."
+      user:
+        inactive: "Sua conta está inativa. Entre em contato com o administrador."
+    registrations:
+      signed_up: "Você se cadastrou com sucesso."
+      updated: "Você atualizou sua conta com sucesso."
+      updated_not_active: "Você atualizou sua conta, mas a sua conta está inativa."
 

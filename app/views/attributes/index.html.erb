@@ -27,7 +27,27 @@
       <% end %>
     </tbody>
   </table>
+  <div class="pagination">
+    <ul class="pagination justify-content-center">
+      <% if @page > 1 %>
+        <li class="page-item">
+          <%= link_to '«', attributes_path(page: @page - 1), class: 'page-link' %>
+        </li>
+      <% end %>
 
+      <% (1..@total_pages).each do |p| %>
+        <li class="page-item <%= 'active' if p == @page %>">
+          <%= link_to p, attributes_path(page: p), class: 'page-link' %>
+        </li>
+      <% end %>
+
+      <% if @page < @total_pages %>
+        <li class="page-item">
+          <%= link_to '»', attributes_path(page: @page + 1), class: 'page-link' %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
   <div class="actions">
     <%= link_to "Novo Atributo", new_attribute_path(locale: I18n.locale), class: "btn btn-success" %>
   </div>

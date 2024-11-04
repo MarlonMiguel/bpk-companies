@@ -1,16 +1,24 @@
 class ProductsController < ApplicationController
-  before_action :authenticate_user!
+  #before_action :authenticate_user!
+  before_action :set_product, only: [:show, :edit, :update, :destroy, :toggle_active]
   before_action :authorize_user!, only: %i[ edit update destroy ]
   before_action :set_categories, only: [:new, :create, :edit, :update]
-  before_action :set_product, only: [:show, :edit, :update, :destroy, :toggle_active]
 
   # GET /products or /products.json
   def index
-    if current_user.admin?  
+    if user_signed_in? && current_user.admin?  
       @products = Product.all  
     else
       @products = current_user.products  
     end
+
+    # Paginação
+    @per_page = 6 
+    @page = params[:page].to_i > 0 ? params[:page].to_i : 1
+    @total_products = @products.count
+    @total_pages = (@total_products / @per_page.to_f).ceil
+
+    @products = @products.limit(@per_page).offset((@page - 1) * @per_page)
   end
 
   # GET /products/1 or /products/1.json
@@ -18,16 +26,22 @@ class ProductsController < ApplicationController
     @product = Product.find(params[:id])
   end
 
-  # GET /products/new
   def new
     @product = Product.new
-    @categories = Category.all # Carregue as categorias para o select
+    if !current_user.admin? 
+      @categories = current_user.categories 
+    else
+      @categories = Category.all
+    end
   end
-
-  # GET /products/1/edit
+  
   def edit
     @product = Product.find(params[:id])
-    @categories = Category.all
+    if !current_user.admin? 
+      @categories = current_user.categories 
+    else
+      @categories = Category.all
+    end
   end
 
   # POST /products or /products.json
@@ -63,15 +77,34 @@ class ProductsController < ApplicationController
 
   # PATCH/PUT /products/1 or /products/1.json
   def update
-    respond_to do |format|
-      if @product.update(product_params)
-        format.html { redirect_to @product, notice: "Product was successfully updated." }
-        format.json { render :show, status: :ok, location: @product }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @product.errors, status: :unprocessable_entity }
-      end
+    @product = Product.find(params[:id])
+  
+    # Preservar imagens existentes
+    if params[:product][:existing_images]
+      existing_images = params[:product][:existing_images].map { |id| ActiveStorage::Blob.find_signed(id) }
+      @product.images.attach(existing_images)
     end
+  
+    if @product.update(product_params)
+      redirect_to @product, notice: 'Produto atualizado com sucesso.'
+    else
+      render :edit
+    end
+
+
+    # logger.debug "Parameters received for update: #{params.inspect}" # Adiciona log dos parâmetros
+  
+    # respond_to do |format|
+    #   if @product.update(product_params)
+    #     logger.debug "Product updated successfully: #{@product.inspect}" # Log de sucesso
+    #     format.html { redirect_to @product, notice: "Product was successfully updated." }
+    #     format.json { render :show, status: :ok, location: @product }
+    #   else
+    #     logger.debug "Failed to update product: #{@product.errors.full_messages}" # Log de erro
+    #     format.html { render :edit, status: :unprocessable_entity }
+    #     format.json { render json: @product.errors, status: :unprocessable_entity }
+    #   end
+    # end
   end
 
   # DELETE /products/1 or /products/1.json
@@ -93,13 +126,10 @@ class ProductsController < ApplicationController
 
   def destroy_image
     @product = Product.find(params[:id])
-    image = @product.images.find(params[:image_id]) # Aqui usamos o image_id para buscar a imagem
-    image.purge # Remove a imagem do ActiveStorage
+    image = @product.images.find(params[:image_id])
+    image.purge # Remove a imagem do produto
   
-    respond_to do |format|
-      format.html { redirect_to @product, notice: "Imagem foi excluída com sucesso." }
-      format.json { head :no_content }
-    end
+    redirect_to edit_product_path(@product), notice: 'Imagem removida com sucesso.'
   end
 
   def toggle_active

@@ -3,7 +3,11 @@ class CategoriesController < ApplicationController
 
   # GET /categories or /categories.json
   def index
-    @categories = Category.all
+    @per_page = 6 
+    @page = params[:page].to_i > 0 ? params[:page].to_i : 1
+    @categories = Category.limit(@per_page).offset((@page - 1) * @per_page)   
+    @total_categories = Category.count
+    @total_pages = (@total_categories / @per_page.to_f).ceil
   end
 
   # GET /categories/1 or /categories/1.json

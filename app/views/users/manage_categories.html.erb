@@ -1,35 +1,45 @@
-<%= form_with model: @user, url: update_categories_user_path(@user, locale: I18n.locale), method: :patch, local: true, data: { controller: "category", action: "submit->category#beforeSubmit" } do |form| %>  
-  <div class="row">
-    <div class="col-md-5">
-      <h3>Categorias Disponíveis</h3>
-      <select id="available_categories" data-category-target="availableCategories" name="user[category_ids][]" multiple size="10" class="form-control">
-        <% @available_categories.each do |category| %>
-          <option value="<%= category.id %>"><%= category.description %></option>
-        <% end %>
-      </select>
-    </div>
 
-    <div class="col-md-2 d-flex flex-column justify-content-center align-items-center">
-      <%= button_tag type: 'button', data: { action: "click->category#addCategory" }, class: "btn btn-primary mb-2" do %>
-        Adicionar >>
-      <% end %>
-
-      <%= button_tag type: 'button', data: { action: "click->category#removeCategory" }, class: "btn btn-secondary" do %>
-        << Remover
-      <% end %>
+<div class="container container-manager-attributes my-5">
+  <div class="card manager-card">
+    <div class="card-header">
+      <h5>Vinculo entre <%= @user.name %> e suas categorias</h5>
     </div>
+    <div class="card-body">
+    <%= form_with model: @user, url: update_categories_user_path(@user, locale: I18n.locale), method: :patch, local: true, data: { controller: "category", action: "submit->category#beforeSubmit" } do |form| %>  
+      <div class="row">
+        <div class="col-md-5">
+          <h3>Categorias Disponíveis</h3>
+          <select id="available_categories" data-category-target="availableCategories" name="user[category_ids][]" multiple size="10" class="form-control">
+            <% @available_categories.each do |category| %>
+              <option value="<%= category.id %>"><%= category.description %></option>
+            <% end %>
+          </select>
+        </div>
 
-    <div class="col-md-5">
-      <h3>Categorias Selecionadas</h3>
-      <select id="selected_categories" data-category-target="selectedCategories" name="user[category_ids][]" multiple size="10" class="form-control">
-        <% @user.categories.each do |category| %>
-          <option value="<%= category.id %>" selected><%= category.description %></option>
-        <% end %>
-      </select>
-    </div>
+        <div class="col-md-2 d-flex flex-column justify-content-center align-items-center">
+          <%= button_tag type: 'button', data: { action: "click->category#addCategory" }, class: "btn btn-primary mb-2" do %>
+            Adicionar
+          <% end %>
+
+          <%= button_tag type: 'button', data: { action: "click->category#removeCategory" }, class: "btn btn-danger" do %>
+            Remover
+          <% end %>
+        </div>
+
+        <div class="col-md-5">
+          <h3>Categorias Selecionadas</h3>
+          <select id="selected_categories" data-category-target="selectedCategories" name="user[category_ids][]" multiple size="10" class="form-control">
+            <% @user.categories.each do |category| %>
+              <option value="<%= category.id %>" selected><%= category.description %></option>
+            <% end %>
+          </select>
+        </div>
+      </div>
+
+      <div class="mt-3">
+        <%= form.submit 'Salvar Categorias', class: "btn btn-success" %>
+        <%= link_to "Voltar", users_path, class: "btn btn-secondary" %>
+      </div>
+    <% end %>
   </div>
-
-  <div class="mt-3">
-    <%= form.submit 'Salvar Categorias', class: "btn btn-success" %>
-  </div>
-<% end %>
+</div>

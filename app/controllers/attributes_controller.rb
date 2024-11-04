@@ -3,7 +3,11 @@ class AttributesController < ApplicationController
 
   # GET /attributes or /attributes.json
   def index
-    @attributes = Attribute.all
+    @per_page = 6 
+    @page = params[:page].to_i > 0 ? params[:page].to_i : 1
+    @attributes = Attribute.limit(@per_page).offset((@page - 1) * @per_page)   
+    @total_attributes = Attribute.count
+    @total_pages = (@total_attributes / @per_page.to_f).ceil
   end
 
   # GET /attributes/1 or /attributes/1.json

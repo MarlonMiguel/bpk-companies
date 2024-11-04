@@ -1,27 +1,67 @@
 .card {
-    height: 100%; /* Para garantir que o card preencha a altura do contêiner */
-  }
-  
-  .card-img-top {
-    width: 100%; /* Tamanho total da imagem no card */
-    height: 200px; /* Altura fixa para a imagem */
-    object-fit: cover; /* Garante que a imagem seja cortada proporcionalmente */
-  }
-  
-  .card-body {
-    border-top: 1px solid #ccc; /* Adiciona um separador entre a imagem e as informações */
-    padding-top: 15px;
-  }
+  height: 100%;
+  /* Para garantir que o card preencha a altura do contêiner */
+}
 
-  .manager-card {
-    width: 750px; /* Ajuste o valor conforme necessário */
-  }
+.card-img-top {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  /* Garante que a imagem seja cortada proporcionalmente */
+}
 
-  .container {
-    max-width: 1000px;
-    margin: auto;
-    background: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+.card-body {
+  border-top: 1px solid #ccc;
+  /* Adiciona um separador entre a imagem e as informações */
+  padding-top: 15px;
+}
+
+.manager-card {
+  width: 750px;
+  /* Ajuste o valor conforme necessário */
+}
+
+.container {
+  max-width: 1090px;
+  margin: auto;
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.custom-margin-top {
+  margin-top: 250px;
+  /* Ajuste o valor para a distância desejada */
+}
+
+.form-check.subcategory .form-check-label {
+  font-size: 0.8rem; /* Tamanho da fonte reduzido */
+}
+
+.form-check-input {
+  margin-top: 0.1rem; /* Alinha melhor o checkbox com o texto */
+}
+
+label {
+  margin-bottom: 0px;
+  font-weight: bold;
+}
+
+.form-control-underline {
+  border: none;
+  border-bottom: 1px solid #ccc; /* Linha inferior */
+  border-radius: 0;
+  transition: border-color 0.3s;
+}
+
+.form-control-underline:focus {
+  border-bottom: 1px solid #007bff; /* Cor ao focar */
+  outline: none;
+  box-shadow: none;
+}
+
+.form-control-underline::placeholder {
+  color: #6c757d; /* Cor de placeholder do Bootstrap */
+  font-style: italic;
 }

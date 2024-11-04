@@ -3,57 +3,7 @@
 <% end %>
 <!-- Navbar Vertical à Esquerda -->
 <body>
-<div id="sidebar" class="bg-dark">
-  <ul class="nav flex-column">
-    <li class="nav-item dropdown">
-      <a class="nav-link dropdown-toggle text-white" href="#" id="dropdownItem1" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-        Imobiliário
-      </a>
-      <ul class="dropdown-menu bg-dark">
-        <li class="nav-item dropdown">
-          <%= link_to 'Venda', store_path(category: 'venda'), class: 'dropdown-item text-white' %>
-        </li>
-        <li class="nav-item dropdown">
-          <%= link_to 'Locação', store_path(category: 'locacao'), class: 'dropdown-item text-white' %>
-        </li>
-      </ul>
-    </li>
-    <li class="nav-item dropdown">
-      <a class="nav-link dropdown-toggle text-white" href="#" id="dropdownItem2" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-        Educacional
-      </a>
-      <ul class="dropdown-menu bg-dark">
-        <li>
-          <%= link_to 'Treinamentos', store_path(category: 'treinamentos'), class: 'dropdown-item text-white' %>
-        </li>
-        <li>
-          <%= link_to 'Cursos', store_path(category: 'cursos'), class: 'dropdown-item text-white' %>
-        </li>
-      </ul>
-    </li>
-    <li>
-      <%= link_to 'Serviços', store_path(category: 'servicos'), class: 'dropdown-item text-white' %>
-    </li>
-    
-    <!-- Links de Admin -->
-    <% if user_signed_in? && current_user.admin? %>
-      <li class="nav-item">
-        <%= link_to 'Visualizar Categorias', categories_path, class: 'dropdown-item text-white' %>
-      </li>
-      <li class="nav-item">
-        <%= link_to 'Visualizar Atributos', attributes_path, class: 'dropdown-item text-white' %>
-      </li>
-      <li class="nav-item">
-        <%= link_to 'Visualizar Usuários', users_path, class: 'dropdown-item text-white' %>
-      </li>
-    <% end %>
-    <% if user_signed_in? %>
-      <li class="nav-item">
-        <%= link_to 'Visualizar Produto', products_path, class: 'dropdown-item text-white' %>
-      </li>
-    <% end%>
-  </ul>
-</div>
+  <%= render 'shared/sidebar' %>
 
 <!-- Container para o Carousel -->
 <div class="carousel-container" style="height: 100vh; overflow: hidden;">

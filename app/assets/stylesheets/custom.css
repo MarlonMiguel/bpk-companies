@@ -21,24 +21,15 @@ body {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-#sidebar {
-  width: 280px; /* Ajuste a largura conforme necessário */
-  background-color: rgba(0, 0, 0, 0.5); /* Fundo transparente */
-  border-right: 1px solid #ddd; /* Borda opcional para separação */
-  position: fixed; /* Mantém o sidebar fixo ao rolar */
-  max-height: 100vh; /* Altura máxima para o sidebar igual à altura da tela */
-  overflow-y: auto; 
-  z-index: 2; /* Garante que o sidebar fique acima do conteúdo */
-}
 
-#sidebar .nav-link,
-#sidebar .dropdown-item {
+.nav-link,
+.dropdown-item {
   font-size: 12px;
   color: white;  /*Cor do texto para branco */
 }
 
-#sidebar .nav-link:hover,
-#sidebar .dropdown-item:hover {
+.nav-link:hover,
+.dropdown-item:hover {
   color: white; /* Cor do texto ao passar o mouse */
   background-color: #495057; /* Cor de fundo ao passar o mouse */
 }
@@ -52,8 +43,13 @@ ul.nav .nav-item {
   margin-bottom: 10px; /* Espaçamento entre itens */
 }
 
+.nav-item .nav-link {
+  white-space: nowrap;
+}
+
 .dropdown-menu {
   background-color: #343a40; /* Mantém o fundo escuro para o submenu */
+  position: relative;
 }
 
 .dropdown-item:hover {
@@ -112,6 +108,8 @@ input[type="submit"]:hover {
 
 .categories-table,
 .attributes-table,
+.products-table,
+.users-table,
 .users-table {
     margin: 20px;
 }
@@ -220,4 +218,71 @@ input[type="submit"]:hover {
 .footer .text-start,
 .footer .text-end {
   flex: 1;
+}
+
+.navbar {
+  background-color: #343a40;
+  border-right: 1px solid #ddd; 
+  position: fixed; 
+  max-height: 100vh; 
+  overflow-y: auto; 
+  overflow: visible;
+  z-index: 2; 
+  width: auto;                
+  min-width: 150px;           
+  max-width: 300px; 
+}
+
+.navbar-nav li {
+  position: relative; /* Para alinhamento correto do <a> */
+}
+
+.navbar-nav li a.dropdown-item {
+  display: block;            /* Faz o <a> ocupar a área total do <li> */
+  width: 100%;               /* Garante que o <a> se expanda na largura completa */
+  padding: 8px 8px;        /* Ajusta o preenchimento conforme necessário */
+  text-align: left;          /* Opcional: Alinha o texto à esquerda */
+  color: #fff;               /* Define a cor do texto */
+}
+
+.navbar-nav li a.dropdown-item:hover {
+  background-color: #0056b3; /* Define a cor de fundo ao passar o mouse */
+  color: #ffffff;            /* Define a cor do texto ao passar o mouse */
+}
+
+
+/* ============ Estilo para dispositivos de desktop ============ */
+@media all and (min-width: 992px) {
+  .dropdown-menu li { 
+    position: relative; 
+  }
+
+  .nav-item .submenu { 
+    display: none;
+    position: absolute;
+    left: 50%;
+    top: 32px;
+  }
+
+  .nav-item .submenu-left { 
+    right: 100%;
+    left: auto;
+  }
+
+  /* .dropdown-menu > li:hover { 
+    background-color: #f1f1f1; 
+  } */
+
+  .dropdown-menu > li:hover > .submenu { 
+    display: block; 
+  }
+}
+
+/* ============ Estilo para dispositivos pequenos ============ */
+@media (max-width: 991px) {
+  .dropdown-menu .dropdown-menu {
+    margin-left: 0.7rem; 
+    margin-right: 0.7rem; 
+    margin-bottom: 0.5rem;
+  }
 }
