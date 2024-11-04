@@ -28,20 +28,12 @@ class ProductsController < ApplicationController
 
   def new
     @product = Product.new
-    if !current_user.admin? 
-      @categories = current_user.categories 
-    else
-      @categories = Category.all
-    end
+    @categories = current_user&.admin? ? Category.all : current_user.categories
   end
-  
+
   def edit
     @product = Product.find(params[:id])
-    if !current_user.admin? 
-      @categories = current_user.categories 
-    else
-      @categories = Category.all
-    end
+    @categories = current_user&.admin? ? Category.all : current_user.categories
   end
 
   # POST /products or /products.json
