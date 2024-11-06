@@ -6,7 +6,8 @@ class PagesController < ApplicationController
 
     @categories_filter = Category.includes(:subcategories).where(parent_id: nil) # Carrega todas as categorias sem pai
     @selected_category = Category.find_by(id: params[:category_id]) 
-    @product_counts = Product.group(:category_id).count
+    @product_counts = Product.where(active: true).group(:category_id).count
+
 
     if @selected_category
       @products = @products.where(category_id: @selected_category.id)

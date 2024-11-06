@@ -28,12 +28,39 @@ class ProductsController < ApplicationController
 
   def new
     @product = Product.new
-    @categories = current_user&.admin? ? Category.all : current_user.categories
-  end
 
+    if current_user.admin?
+      @categories = Category.left_joins(:subcategories).where(subcategories_categories: { id: nil })
+    else
+      # Se o usuário for vendedor, traz as categorias associadas ao vendedor
+      @categories = current_user.categories.left_joins(:subcategories).where(subcategories_categories: { id: nil })
+    end
+  
+    # Debug: Mostrar as categorias no log
+    logger.debug "Categorias recuperadas: #{@categories.inspect}"
+  
+    # Se o vendedor não tem categorias, exibe a mensagem
+    if @categories.empty?
+      flash.now[:alert] = "Você não possui categorias vinculadas. Por favor, peça para o administrador vincular uma categoria a você."
+    end
+  end
+  
   def edit
     @product = Product.find(params[:id])
-    @categories = current_user&.admin? ? Category.all : current_user.categories
+    if current_user.admin?
+      @categories = Category.left_joins(:subcategories).where(subcategories_categories: { id: nil })
+    else
+      # Se o usuário for vendedor, traz as categorias associadas ao vendedor
+      @categories = current_user.categories.left_joins(:subcategories).where(subcategories_categories: { id: nil })
+    end
+  
+    # Debug: Mostrar as categorias no log
+    logger.debug "Categorias recuperadas: #{@categories.inspect}"
+  
+    # Se o vendedor não tem categorias, exibe a mensagem
+    if @categories.empty?
+      flash.now[:alert] = "Você não possui categorias vinculadas. Por favor, peça para o administrador vincular uma categoria a você."
+    end
   end
 
   # POST /products or /products.json

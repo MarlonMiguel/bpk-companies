@@ -72,19 +72,28 @@
                         <% end %>
 
                         <div class="card-body">
-                          <div class="mt-2">
+                          <div class="d-flex flex-wrap mb-3">
                             <%= render_category_badges(product.category) %>
                           </div>
-                          <h5 class="card-title"><%= product.name %></h5>
-                          <% product.product_attribute_category_values.each do |attribute| %>
-                            <p class="card-text"><%= attribute.value %></p>
-                          <% end %>
+
+                          <h5 class="card-title font-weight-bold text-primary"><%= product.name %></h5>
+                          <h6 class="card-subtitle text-muted mb-3">R$ <%= number_to_currency(product.price, unit: '', separator: ',', delimiter: '.') %></h6>
                         </div>
 
-                        <div class="card-footer">
-                          <h6>Vendedor: <%= product.user.name %></h6>
-                          <p>Contato: <%= product.user.phone %></p>
+                        <div class="card-footer bg-light border-top">
+                          <p class="mb-2"><strong>Vendedor:</strong> <%= product.user.name %></p>
+                          <p class="mb-2">
+                            <strong>Telefone:</strong> 
+                            <%= product.user.phone %>
+                            <%= link_to '<i class="bi bi-whatsapp text-success" style="font-size: 1.2rem;"></i>'.html_safe,
+                                        "https://wa.me/#{product.user.phone}?text=Olá%20#{ERB::Util.url_encode(product.user.name)},%20tenho%20interesse%20no%20produto%20#{ERB::Util.url_encode(product.name)}.",
+                                        target: "_blank", 
+                                        rel: "noopener", 
+                                        class: "ms-2 text-decoration-none" %>
+                          </p>
+                          <p class="mb-2"><strong>Email:</strong> <%= mail_to product.user.email, nil, class: "text-decoration-none" %></p>
                         </div>
+                        
                       </div>
                     <% end %>
                   </div>

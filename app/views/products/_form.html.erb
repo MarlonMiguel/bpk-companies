@@ -62,24 +62,24 @@
           <div class="col-md-6">
             <div class="card">
               <div class="mb-3">
-                <select id="category-select" name="product[category_id]" class="form-select"
-                        data-controller="product" 
-                        data-action="change->product#fetchAttributes">
+                <%= form.label :category_id, "Categoria", class: "form-label" %>
+                <select id="category-select" name="product[category_id]" class="form-select" data-controller="product" data-action="change->product#fetchAttributes">
                   <option value="">Selecione uma categoria</option>
                   <% @categories.each do |category| %>
-                    <option value="<%= category.id %>" <%= 'selected' if category.id == @product.category_id || (@categories.count == 1 && category.id == @categories.first.id) %>>
+                    <option value="<%= category.id %>" title="<%= category.full_description %>" <%= 'selected' if category.id == @product.category_id %>>
                       <%= category.description %>
                     </option>
                   <% end %>
                 </select>
               </div>
+
               <div class="card-header">
                 <h5>Atributos da Categoria</h5>
               </div>
               <div class="card-body" id="attributesContainer">
-                <% if @categories.count == 1 && @categories.first.attributes.any? %>
-                  <% attributes = @categories.first.attributes %>
-                  <% attributes.each do |attribute| %>
+                <!-- Exibe atributos da categoria selecionada -->
+                <% if @product.category && @product.category.attributes.any? %>
+                  <% @product.category.attributes.each do |attribute| %>
                     <div class="mb-3">
                       <%= label_tag "attribute_#{attribute.id}", attribute.description %>
                       <%= text_field_tag "product[attributes_attributes][#{attribute.id}]", nil, class: "form-control" %>

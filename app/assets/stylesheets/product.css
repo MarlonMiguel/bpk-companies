@@ -6,3 +6,23 @@
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
+
+/* Aplica estilo ao select */
+#category-select {
+    font-size: 1rem;
+    /* Tamanho padrão para a descrição */
+}
+
+/* Para textos longos, ajuste a largura ou use overflow */
+#category-select option {
+    white-space: nowrap;
+    /* Impede quebras de linha */
+}
+
+/* Para a parte do caminho, você pode usar uma classe CSS específica no select */
+.category-path {
+    font-size: 0.8em;
+    /* Reduz o tamanho do caminho hierárquico */
+    color: #777;
+    /* Cor mais clara */
+}
