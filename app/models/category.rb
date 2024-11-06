@@ -10,6 +10,10 @@ class Category < ApplicationRecord
   
     validate :parent_cannot_be_self, if: -> { parent_id.present? }
 
+    def full_description
+      parent ? "#{parent.full_description} -> #{description}" : description
+    end
+
     private
     
     def parent_cannot_be_self

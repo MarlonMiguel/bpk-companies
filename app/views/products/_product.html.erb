@@ -49,6 +49,13 @@
             <span class="badge bg-primary">
               <%= product.category&.description || 'Sem categoria' %>
             </span>
+
+            <% product.product_attribute_category_values.each do |product_attribute| %>
+              <p class="card-text">
+                <strong><%= product_attribute.category_attribute.description %>:</strong> <%= product_attribute.value %>
+              </p>
+            <% end %>
+            
             <p class="mb-1"><strong>Valor:</strong> <%= number_to_currency(product.price, unit: "R$", separator: ",", delimiter: ".") || 'Sem Valor' %></p>
           </div>
           <div class="mt-4">
