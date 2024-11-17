@@ -1,5 +1,5 @@
 .card {
-  height: 100%;
+  /* height: 100%; */
   /* Para garantir que o card preencha a altura do contêiner */
 }
 
@@ -36,11 +36,13 @@
 }
 
 .form-check.subcategory .form-check-label {
-  font-size: 0.8rem; /* Tamanho da fonte reduzido */
+  font-size: 0.8rem;
+  /* Tamanho da fonte reduzido */
 }
 
 .form-check-input {
-  margin-top: 0.1rem; /* Alinha melhor o checkbox com o texto */
+  margin-top: 0.1rem;
+  /* Alinha melhor o checkbox com o texto */
 }
 
 label {
@@ -50,18 +52,36 @@ label {
 
 .form-control-underline {
   border: none;
-  border-bottom: 1px solid #ccc; /* Linha inferior */
+  border-bottom: 1px solid #ccc;
+  /* Linha inferior */
   border-radius: 0;
   transition: border-color 0.3s;
 }
 
 .form-control-underline:focus {
-  border-bottom: 1px solid #007bff; /* Cor ao focar */
+  border-bottom: 1px solid #007bff;
+  /* Cor ao focar */
   outline: none;
   box-shadow: none;
 }
 
 .form-control-underline::placeholder {
-  color: #6c757d; /* Cor de placeholder do Bootstrap */
+  color: #6c757d;
+  /* Cor de placeholder do Bootstrap */
   font-style: italic;
+}
+
+/* Define uma altura máxima para o card de filtro de categoria */
+.category-filters-card {
+  max-height: 400px;
+  overflow-y: auto;
+  margin-top: 230px;
+  /* Espaço em relação ao topo */
+  max-width: 250px;
+  /* Largura máxima para o card */
+}
+
+/* Define uma altura ajustada para o card de filtro de nome e preço */
+.name-price-filters-card {
+  max-height: 200px;
 }

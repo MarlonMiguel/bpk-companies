@@ -54,6 +54,7 @@ pt:
         signed_out: "Obrigado por utilizar o sistema."
     failure:
       already_authenticated: "Você já está autenticado."
+      unauthenticated: "Você precisa estar autenticado para acessar esta página."
       user:
         inactive: "Sua conta está inativa. Entre em contato com o administrador."
     registrations:

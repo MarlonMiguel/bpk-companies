@@ -3,7 +3,7 @@
 <% end %>
 <!-- Navbar Vertical à Esquerda -->
 <body>
-  <%= render 'shared/sidebar' %>
+<%= render 'shared/accordion' %>
 
 <!-- Container para o Carousel -->
 <div class="carousel-container" style="height: 100vh; overflow: hidden;">
@@ -54,3 +54,38 @@
   </div>
 </div>
 </body>
+<script>
+// document.addEventListener("DOMContentLoaded", function() {
+//   const links = document.querySelectorAll("#accordian a");
+
+//   links.forEach(link => {
+//     link.addEventListener("click", function(event) {
+//       event.preventDefault();
+      
+//       const closestUl = link.closest("ul");
+//       const parallelActiveLinks = closestUl.querySelectorAll(".active");
+//       const closestLi = link.closest("li");
+//       const isActive = closestLi.classList.contains("active");
+
+//       // Fecha todos os submenus visíveis
+//       let count = 0;
+//       closestUl.querySelectorAll("ul").forEach(submenu => {
+//         submenu.style.display = "none";
+//         count++;
+//       });
+
+//       parallelActiveLinks.forEach(activeLink => activeLink.classList.remove("active"));
+
+//       // Se o submenu não estiver ativo, expande-o e define como ativo
+//       if (!isActive) {
+//         const submenu = closestLi.querySelector("ul");
+//         if (submenu) {
+//           submenu.style.display = "block";
+//           closestLi.classList.add("active");
+//         }
+//       }
+//     });
+//   });
+// });
+</script>
+

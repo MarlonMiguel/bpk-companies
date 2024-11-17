@@ -45,7 +45,7 @@ group :development, :test do
   gem 'rspec-rails', '~> 5.0'
   gem 'rspec-html'
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
-  gem "debug", platforms: %i[ mri windows ]
+  #gem "debug", platforms: %i[ mri windows ]
 end
 
 group :development do
@@ -78,4 +78,6 @@ gem 'image_processing', '~> 1.2'
 gem 'recaptcha', require: 'recaptcha/rails'
 
 gem "cssbundling-rails", "~> 1.4"
+
+gem 'debug', '~> 1.0'
 

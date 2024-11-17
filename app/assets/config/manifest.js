@@ -10,3 +10,4 @@
 //= link category.css
 //= link product.css
 //= link product-show.css
+//= link accordion.css

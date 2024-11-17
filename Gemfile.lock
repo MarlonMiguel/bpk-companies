@@ -312,7 +312,7 @@ DEPENDENCIES
   bootsnap
   capybara
   cssbundling-rails (~> 1.4)
-  debug
+  debug (~> 1.0)
   devise
   dotenv-rails
   image_processing (~> 1.2)

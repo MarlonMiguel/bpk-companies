@@ -7,18 +7,24 @@ class ProductsController < ApplicationController
   # GET /products or /products.json
   def index
     if user_signed_in? && current_user.admin?  
-      @products = Product.all  
+      products_scope = Product.all  
     else
-      @products = current_user.products  
+      products_scope = current_user.products  
     end
 
     # Paginação
     @per_page = 6 
     @page = params[:page].to_i > 0 ? params[:page].to_i : 1
-    @total_products = @products.count
-    @total_pages = (@total_products / @per_page.to_f).ceil
 
-    @products = @products.limit(@per_page).offset((@page - 1) * @per_page)
+    products_scope = products_scope.where("name ILIKE ?", "%#{params[:name]}%") if params[:name].present?
+    products_scope = products_scope.where(active: params[:active]) if params[:active].present?
+    products_scope = products_scope.where(user_id: params[:user_id]) if params[:user_id].present?
+  
+    @total_products = products_scope.count
+    @total_pages = (@total_products / @per_page.to_f).ceil
+    @products = products_scope.limit(@per_page).offset((@page.to_i - 1) * @per_page)
+
+    @users = User.all
   end
 
   # GET /products/1 or /products/1.json
@@ -145,10 +151,13 @@ class ProductsController < ApplicationController
 
   def destroy_image
     @product = Product.find(params[:id])
-    image = @product.images.find(params[:image_id])
-    image.purge # Remove a imagem do produto
+    @image = @product.images.find(params[:image_id])
+    @image.purge
   
-    redirect_to edit_product_path(@product), notice: 'Imagem removida com sucesso.'
+    respond_to do |format|
+      format.html { redirect_to edit_product_path(@product), notice: 'Imagem removida com sucesso.' }
+      format.json { head :no_content } # Responde com JSON vazio para AJAX
+    end
   end
 
   def toggle_active

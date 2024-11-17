@@ -32,13 +32,15 @@
                     <h5>Imagens Salvas:</h5>
                     <div class="d-flex flex-wrap">
                       <% product.images.each do |image| %>
-                        <div class="position-relative m-2" style="width: 80px; height: 80px;">
+                        <div class="position-relative m-2" style="width: 80px; height: 80px;" data-controller="image" data-image-target="container">
                           <%= image_tag image, size: "80x80", class: "img-thumbnail" %>
-                          
-                          <!-- Formulário para deletar a imagem usando Turbo -->
-                          <%= form_with url: image_product_path(product, image_id: image.id, locale: I18n.locale), method: :delete, data: { turbo: true }, class: "position-absolute top-0 end-0" do %>
-                            <%= submit_tag 'X', class: "btn btn-danger btn-sm", data: { confirm: 'Tem certeza que deseja excluir esta imagem?' }, style: "width: 20px; height: 20px; padding: 0; border-radius: 50%; line-height: 1;" %>
-                          <% end %>
+
+                          <!-- Botão de exclusão usando Stimulus -->
+                          <%= link_to "X", image_product_path(product, image_id: image.id, locale: I18n.locale),
+                              method: :delete,
+                              class: "btn btn-danger btn-sm position-absolute top-0 end-0",
+                              data: { action: "image#delete", confirm: 'Tem certeza que deseja excluir esta imagem?' },
+                              style: "width: 20px; height: 20px; padding: 0; border-radius: 50%; line-height: 1;" %>
                         </div>
                       <% end %>
                     </div>
@@ -78,8 +80,8 @@
               </div>
               <div class="card-body" id="attributesContainer">
                 <!-- Exibe atributos da categoria selecionada -->
-                <% if @product.category && @product.category.attributes.any? %>
-                  <% @product.category.attributes.each do |attribute| %>
+                <% if @product.category && @product.category.custom_attributes.any? %>
+                  <% @product.category.custom_attributes.each do |attribute| %>
                     <div class="mb-3">
                       <%= label_tag "attribute_#{attribute.id}", attribute.description %>
                       <%= text_field_tag "product[attributes_attributes][#{attribute.id}]", nil, class: "form-control" %>

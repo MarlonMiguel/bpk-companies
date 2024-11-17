@@ -1,0 +1,65 @@
+<turbo-frame id="products-list">
+  <div class="card">
+    <div class="card-body">
+      <div class="row">
+        <% @products.in_groups_of(4, false).each do |product_group| %>
+          <div class="row mb-4">
+            <% product_group.each do |product| %>
+              <div class="col-md-3">
+                <%= link_to product_path(product, locale: I18n.locale), class: 'text-decoration-none', data: { turbo: false } do %>
+                  <div class="card h-100">
+                    <% if product.images.any? %>
+                      <div id="carousel-<%= product.id %>" class="carousel slide" data-bs-interval="false">
+                        <div class="carousel-inner">
+                          <% product.images.each_with_index do |image, index| %>
+                            <div class="carousel-item <%= 'active' if index.zero? %>">
+                              <%= image_tag image, class: "d-block w-100 img-fluid", style: "object-fit: cover; height: 200px;", alt: product.name %>
+                            </div>
+                          <% end %>
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carousel-<%= product.id %>" data-bs-slide="prev">
+                          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                          <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#carousel-<%= product.id %>" data-bs-slide="next">
+                          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                          <span class="visually-hidden">Next</span>
+                        </button>
+                      </div>
+                    <% else %>
+                      <%= image_tag 'default_image.png', class: "card-img-top", style: "object-fit: cover; height: 200px;", alt: 'Imagem padrão' %>
+                    <% end %>
+
+                    <div class="card-body">
+                      <div class="d-flex flex-wrap mb-3">
+                        <%= render_category_badges(product.category) %>
+                      </div>
+
+                      <h5 class="card-title font-weight-bold text-primary"><%= product.name %></h5>
+                      <h6 class="card-subtitle text-muted mb-3">R$ <%= number_to_currency(product.price, unit: '', separator: ',', delimiter: '.') %></h6>
+                    </div>
+
+                    <div class="card-footer bg-light border-top">
+                      <p class="mb-2"><strong>Vendedor:</strong> <%= product.user.name %></p>
+                      <p class="mb-2">
+                        <strong>Telefone:</strong> 
+                        <%= product.user.phone %>
+                        <%= link_to '<i class="bi bi-whatsapp text-success" style="font-size: 1.2rem;"></i>'.html_safe,
+                                    "https://wa.me/#{product.user.phone}?text=Olá%20#{ERB::Util.url_encode(product.user.name)},%20tenho%20interesse%20no%20produto%20#{ERB::Util.url_encode(product.name)}.",
+                                    target: "_blank", 
+                                    rel: "noopener", 
+                                    class: "ms-2 text-decoration-none" %>
+                      </p>
+                      <p class="mb-2"><strong>Email:</strong> <%= mail_to product.user.email, nil, class: "text-decoration-none" %></p>
+                    </div>
+                    
+                  </div>
+                <% end %>
+              </div>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</turbo-frame>

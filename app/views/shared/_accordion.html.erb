@@ -1,0 +1,34 @@
+<% content_for :header do %>
+  <%= stylesheet_link_tag 'accordion', media: 'all' %>
+<% end %>
+<!-- app/views/shared/_accordion_sidebar.html.erb -->
+<nav class="navbar navbar-expand-lg navbar-dark" data-controller="accordion">
+  <div class="container-fluid flex-column">
+    <div class="accordion" id="categoryAccordion">
+      <%= content_tag :div, class: "accordion accordion-dark-theme", id: "categoryAccordion" do %>
+        <% @categories.each do |category| %>
+          <% if category.parent_id.nil? %>
+            <%= render_category_accordion(category, @categories) %>
+          <% end %>
+        <% end %>
+      <% end %>
+
+      <!-- Links de Admin -->
+      <% if user_signed_in? %>
+        <div class="accordion-item accordion-dark-theme border-0">
+          <div class="accordion-body p-0">
+            <ul class="list-unstyled">
+              <li><%= link_to 'Visualizar Produto', products_path, class: 'text-white text-decoration-none' %></li>
+              <% if current_user.admin? %>
+                <li><%= link_to 'Visualizar Categorias', categories_path, class: 'text-white text-decoration-none' %></li>
+                <li><%= link_to 'Visualizar Atributos', attributes_path, class: 'text-white text-decoration-none' %></li>
+                <li><%= link_to 'Visualizar Usuários', users_path, class: 'text-white text-decoration-none' %></li>
+              <% end %>
+            </ul>
+          </div>
+        </div>
+      <% end %>
+
+    </div>
+  </div>
+</nav>
