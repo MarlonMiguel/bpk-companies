@@ -16,31 +16,28 @@
                 <h5><%= product.new_record? ? "Criar Produto" : "Editar Produto" %></h5>
               </div>
               <div class="card-body">
-                <!-- Upload de Imagens -->
-                <div class="mb-3">
+
+                <!-- Campo para upload de novas imagens -->
+                <div class="mb-3" data-controller="image-preview">
                   <%= form.label :images, "Imagens do produto", class: "form-label" %>
                   <%= form.file_field :images, multiple: true, class: "form-control", data: { action: "change->image-preview#preview" } %>
+                  <div class="mb-3 mt-2" data-minimap="true" data-image-preview-target="previewContainer"></div>
                 </div>
-
-                <!-- Contêiner de Pré-visualização das Imagens -->
-                <div class="mb-3" data-minimap="true" data-image-preview-target="previewContainer">
-                </div>
-
-                <!-- Exibir imagens já salvas -->
+                <!-- Exibição de imagens existentes com opções de remoção -->
                 <% if product.persisted? && product.images.attached? %>
                   <div class="mb-3">
                     <h5>Imagens Salvas:</h5>
                     <div class="d-flex flex-wrap">
                       <% product.images.each do |image| %>
-                        <div class="position-relative m-2" style="width: 80px; height: 80px;" data-controller="image" data-image-target="container">
+                        <div class="position-relative m-2" style="width: 80px;">
+                          <!-- Imagem -->
                           <%= image_tag image, size: "80x80", class: "img-thumbnail" %>
 
-                          <!-- Botão de exclusão usando Stimulus -->
-                          <%= link_to "X", image_product_path(product, image_id: image.id, locale: I18n.locale),
-                              method: :delete,
-                              class: "btn btn-danger btn-sm position-absolute top-0 end-0",
-                              data: { action: "image#delete", confirm: 'Tem certeza que deseja excluir esta imagem?' },
-                              style: "width: 20px; height: 20px; padding: 0; border-radius: 50%; line-height: 1;" %>
+                          <!-- Checkbox e label alinhados abaixo da imagem -->
+                          <div class="form-check text-center mt-2">
+                            <%= check_box_tag "product[remove_image_ids][]", image.id, false, class: "form-check-input" %>
+                            <%= label_tag "product_remove_image_ids_#{image.id}", "Remover", class: "form-check-label small" %>
+                          </div>
                         </div>
                       <% end %>
                     </div>

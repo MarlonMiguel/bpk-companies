@@ -60,9 +60,6 @@ class ProductsController < ApplicationController
       @categories = current_user.categories.left_joins(:subcategories).where(subcategories_categories: { id: nil })
     end
   
-    # Debug: Mostrar as categorias no log
-    logger.debug "Categorias recuperadas: #{@categories.inspect}"
-  
     # Se o vendedor não tem categorias, exibe a mensagem
     if @categories.empty?
       flash.now[:alert] = "Você não possui categorias vinculadas. Por favor, peça para o administrador vincular uma categoria a você."
@@ -101,20 +98,20 @@ class ProductsController < ApplicationController
   end
 
   # PATCH/PUT /products/1 or /products/1.json
-  def update
-    @product = Product.find(params[:id])
+  # def update
+  #   @product = Product.find(params[:id])
   
-    # Preservar imagens existentes
-    if params[:product][:existing_images]
-      existing_images = params[:product][:existing_images].map { |id| ActiveStorage::Blob.find_signed(id) }
-      @product.images.attach(existing_images)
-    end
+  #   # Preservar imagens existentes
+  #   if params[:product][:existing_images]
+  #     existing_images = params[:product][:existing_images].map { |id| ActiveStorage::Blob.find_signed(id) }
+  #     @product.images.attach(existing_images)
+  #   end
   
-    if @product.update(product_params)
-      redirect_to @product, notice: 'Produto atualizado com sucesso.'
-    else
-      render :edit
-    end
+  #   if @product.update(product_params)
+  #     redirect_to @product, notice: 'Produto atualizado com sucesso.'
+  #   else
+  #     render :edit
+  #   end
 
 
     # logger.debug "Parameters received for update: #{params.inspect}" # Adiciona log dos parâmetros
@@ -130,6 +127,29 @@ class ProductsController < ApplicationController
     #     format.json { render json: @product.errors, status: :unprocessable_entity }
     #   end
     # end
+  # end
+
+  def update
+    @product = Product.find(params[:id])
+  
+    # Remove imagens selecionadas para exclusão
+    if params[:product][:remove_image_ids].present?
+      params[:product][:remove_image_ids].each do |id|
+        @product.images.find(id).purge
+      end
+    end
+  
+    # Atualiza o restante do produto, incluindo novas imagens
+    if params[:product][:images].present?
+      @product.images.attach(params[:product][:images])
+    end
+  
+    # Atualize os outros atributos
+    if @product.update(product_params.except(:images))
+      redirect_to @product, notice: "Produto atualizado com sucesso."
+    else
+      render :edit, status: :unprocessable_entity
+    end
   end
 
   # DELETE /products/1 or /products/1.json
