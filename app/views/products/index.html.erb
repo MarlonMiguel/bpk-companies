@@ -1,5 +1,34 @@
 <div id="products" class="products-table">
-  <h1>Lista de Produtos</h1>
+  <h2>Lista de Produtos</h2>
+
+<div class="filters mb-3">
+  <%= form_with(url: products_path, method: :get, local: true, class: 'd-flex justify-content-between') do |form| %>
+    <div class="row">
+      <div class="col-md-3">
+        <%= form.label :name, 'Nome do Produto' %>
+        <%= form.text_field :name, class: 'form-control form-control-sm', placeholder: 'Buscar pelo nome' %>
+      </div>
+
+      <div class="col-md-2">
+        <%= form.label :active, "Status", class: "form-label" %>
+        <%= form.select :active, [["Ativo", true], ["Inativo", false]], { include_blank: "Selecione um status" }, class: "form-select" %>
+      </div>
+      <% if current_user.admin? %>
+        <div class="col-md-3">
+          <%= form.label :user_id, "Usuário", class: "form-label" %>
+          <%= form.select :user_id, 
+                options_from_collection_for_select(@users, :id, :name, params[:user_id]), 
+                { include_blank: "Selecione um usuário" }, 
+                class: "form-select" %>
+        </div>
+      <% end %>
+      <div class="form-group col-md-3 align-self-end">
+        <%= form.submit "Buscar", class: "btn btn-sm btn-primary" %>
+        <%= link_to "Limpar", products_path, class: "btn btn-sm btn-secondary" %>
+      </div>
+    </div>
+  <% end %>
+</div>
 
   <table class="table">
     <thead>
@@ -23,14 +52,24 @@
           <td>
             <% if product.id.present? %>
               <%= form_with url: toggle_active_product_path(product.id, locale: I18n.locale), method: :patch, class: 'd-inline' do %>
-                <%= submit_tag 'Alterar status produto', class: 'btn btn-sm btn-primary', data: { confirm: 'Tem certeza que deseja alterar o status?' } %>
+                <%= button_tag type: 'submit', class: 'btn btn-sm', title: product.active? ? 'Desativar produto' : 'Ativar produto', data: { bs_toggle: 'tooltip' }, 
+                    style: "color: white; background-color: #{product.active? ? '#28a745' : '#dc3545'}; border-color: #{product.active? ? '#dc3545' : '#28a745'};" do %>
+                <i class="bi <%= product.active? ? 'bi-toggle-on' : 'bi-toggle-off' %>"></i>
+                <% end %>
               <% end %>
-              <%= link_to 'Ver', product_path(product, locale: I18n.locale), class: 'btn btn-info btn-sm' %>
-              <%= link_to 'Editar', edit_product_path(product, locale: I18n.locale), class: 'btn btn-warning btn-sm' %>
-              <%= link_to "Excluir", product_path(product, locale: I18n.locale), 
-                method: :delete, 
-                data: { turbo_method: :delete, turbo_confirm: "Tem certeza que deseja excluir esta categoria?" }, 
-                class: "btn btn-sm btn-danger" %>  
+
+              <%= link_to product_path(product, locale: I18n.locale), class: 'btn btn-secondary btn-sm' do %>
+                <i class="bi bi-eye" title="Ver produto"></i>
+              <% end %>
+
+              <%= link_to edit_product_path(product, locale: I18n.locale), class: 'btn btn-warning btn-sm' do %>
+                <i class="bi bi-pencil" title="Editar produto"></i>
+              <% end %>
+
+              <%= link_to product_path(product, locale: I18n.locale), method: :delete, data: { turbo_method: :delete, turbo_confirm: "Tem certeza que deseja excluir este produto?" }, class: 'btn btn-danger btn-sm' do %>
+                <i class="bi bi-trash" title="Excluir produto"></i>
+              <% end %>
+
             <% else %>
               <span>Produto inválido</span>
             <% end %>

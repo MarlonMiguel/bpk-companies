@@ -1,14 +1,28 @@
 class AttributesController < ApplicationController
   before_action :set_attribute, only: %i[ show edit update destroy ]
+  load_and_authorize_resource
 
   # GET /attributes or /attributes.json
   def index
-    @per_page = 6 
-    @page = params[:page].to_i > 0 ? params[:page].to_i : 1
-    @attributes = Attribute.limit(@per_page).offset((@page - 1) * @per_page)   
-    @total_attributes = Attribute.count
-    @total_pages = (@total_attributes / @per_page.to_f).ceil
+    # Página atual
+    @page = params[:page].present? ? params[:page].to_i : 1
+    @per_page = 6  # Número de atributos por página
+    
+    # Filtros
+    attributes_scope = Attribute.all
+    attributes_scope = attributes_scope.where("description ILIKE ?", "%#{params[:description]}%") if params[:description].present?
+    attributes_scope = attributes_scope.where("domain ILIKE ?", "%#{params[:domain]}%") if params[:domain].present?
+  
+    # Total de atributos (sem paginar)
+    @total_attributes = attributes_scope.count
+    
+    # Total de páginas
+    @total_pages = (@total_attributes.zero? ? 1 : (@total_attributes / @per_page.to_f).ceil)
+    
+    # Paginação (aplicando offset e limit após os filtros)
+    @attributes = attributes_scope.offset((@page - 1) * @per_page).limit(@per_page)
   end
+  
 
   # GET /attributes/1 or /attributes/1.json
   def show

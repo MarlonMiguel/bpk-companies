@@ -13,6 +13,7 @@ class User < ApplicationRecord
   validates :phone, presence: true
   validates :password, presence: true, on: :create
   validates :password, allow_blank: true, confirmation: true, length: { minimum: 6 }, if: :password_required?
+  validate :password_complexity
 
   def admin?
     role == 'admin' 
@@ -26,4 +27,11 @@ class User < ApplicationRecord
     active? ? super : :inactive
   end
 
+  private
+
+  def password_complexity
+    return if password.blank? || password =~ /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
+
+    errors.add :password, "deve ter pelo menos 8 caracteres, incluindo uma letra maiúscula, uma letra minúscula, um número e um símbolo especial (@, $, !, %, *, ?, &)"
+  end
 end

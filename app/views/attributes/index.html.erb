@@ -1,6 +1,25 @@
 <div id="attributes" class="attributes-table">
-  <h1><%= t('lists.list_of_attributes') %></h1>
-  
+  <h2><%= t('lists.list_of_attributes') %></h2>
+
+  <!-- Filtros -->
+  <%= form_with url: attributes_path, method: :get, local: true, class: "mb-3" do |f| %>
+    <div class="row">
+      <div class="col-md-3">
+        <%= f.label :description, "Descrição", class: "form-label" %>
+        <%= f.text_field :description, class: "form-control", value: params[:description] %>
+      </div>
+      <div class="col-md-3">
+        <%= f.label :domain, "Tipo", class: "form-label" %>
+        <%= f.text_field :domain, class: "form-control", value: params[:domain] %>
+      </div>
+      <div class="col-md-3 align-self-end">
+        <%= f.submit "Buscar", class: "btn btn-sm btn-primary" %>
+        <%= link_to "Limpar", attributes_path, class: "btn btn-sm btn-secondary" %>
+      </div>
+    </div>
+  <% end %>
+
+  <!-- Tabela de Atributos -->
   <table class="table">
     <thead>
       <tr>
@@ -17,38 +36,51 @@
           <td><%= attribute.description %></td>
           <td><%= attribute.domain %></td>
           <td>
-            <%= link_to "Editar", edit_attribute_path(attribute, locale: I18n.locale), class: "btn btn-info" %>
-            <%= link_to "Excluir", attribute_path(attribute, locale: I18n.locale), 
-                method: :delete, 
-                data: { turbo_method: :delete, turbo_confirm: "Tem certeza que deseja excluir esta categoria?" }, 
-                class: "btn btn-danger" %>        
+            <%= link_to edit_attribute_path(attribute, locale: I18n.locale), 
+                        class: "btn btn-sm btn-warning", 
+                        title: "Editar atributo", 
+                        data: { bs_toggle: "tooltip" } do %>
+              <i class="bi bi-pencil"></i>
+            <% end %>
+            
+            <%= link_to attribute_path(attribute, locale: I18n.locale), 
+                        method: :delete, 
+                        data: { turbo_method: :delete, turbo_confirm: "Tem certeza que deseja excluir este atributo?" }, 
+                        class: "btn btn-sm btn-danger", 
+                        title: "Excluir atributo", 
+                        data: { bs_toggle: "tooltip" } do %>
+              <i class="bi bi-trash"></i>
+            <% end %>
           </td>
         </tr>
       <% end %>
     </tbody>
   </table>
+  <!-- Paginação -->
   <div class="pagination">
-    <ul class="pagination justify-content-center">
+    <ul class="pagination pagination-sm justify-content-center">
       <% if @page > 1 %>
         <li class="page-item">
-          <%= link_to '«', attributes_path(page: @page - 1), class: 'page-link' %>
+          <%= link_to '«', attributes_path(page: @page - 1, description: params[:description], domain: params[:domain]), class: 'page-link' %>
         </li>
       <% end %>
 
       <% (1..@total_pages).each do |p| %>
         <li class="page-item <%= 'active' if p == @page %>">
-          <%= link_to p, attributes_path(page: p), class: 'page-link' %>
+          <%= link_to p, attributes_path(page: p, description: params[:description], domain: params[:domain]), class: 'page-link' %>
         </li>
       <% end %>
 
       <% if @page < @total_pages %>
         <li class="page-item">
-          <%= link_to '»', attributes_path(page: @page + 1), class: 'page-link' %>
+          <%= link_to '»', attributes_path(page: @page + 1, description: params[:description], domain: params[:domain]), class: 'page-link' %>
         </li>
       <% end %>
     </ul>
   </div>
+
+  <!-- Ação de novo atributo -->
   <div class="actions">
-    <%= link_to "Novo Atributo", new_attribute_path(locale: I18n.locale), class: "btn btn-success" %>
+    <%= link_to "Novo Atributo", new_attribute_path(locale: I18n.locale), class: "btn btn-sm btn-success" %>
   </div>
 </div>

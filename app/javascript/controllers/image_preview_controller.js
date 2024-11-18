@@ -20,7 +20,7 @@ export default class extends Controller {
 
     Array.from(input.files).forEach(file => {
       const reader = new FileReader();
-
+      console.log('ta chegando');
       reader.onload = (e) => {
         const img = document.createElement('img');
         img.src = e.target.result;

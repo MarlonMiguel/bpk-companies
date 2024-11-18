@@ -1,13 +1,23 @@
 class CategoriesController < ApplicationController
   before_action :set_category, only: %i[ show edit update destroy ]
+  load_and_authorize_resource
 
   # GET /categories or /categories.json
   def index
-    @per_page = 6 
-    @page = params[:page].to_i > 0 ? params[:page].to_i : 1
-    @categories = Category.limit(@per_page).offset((@page - 1) * @per_page)   
-    @total_categories = Category.count
-    @total_pages = (@total_categories / @per_page.to_f).ceil
+    @page = params[:page].present? ? params[:page].to_i : 1
+    @per_page = 6
+  
+    # Filtros
+    categories_scope = Category.includes(:parent)
+    categories_scope = categories_scope.where("description ILIKE ?", "%#{params[:description]}%") if params[:description].present?
+    categories_scope = categories_scope.where(parent_id: params[:parent_id]) if params[:parent_id].present?
+  
+    # Paginação
+    @total_categories = categories_scope.count
+    @total_pages = (@total_categories.zero? ? 1 : (@total_categories / @per_page.to_f).ceil)
+    @categories = categories_scope.offset((@page - 1) * @per_page).limit(@per_page)
+  
+    @parent_categories = Category.where(parent_id: nil) # Para o filtro de categorias pai
   end
 
   # GET /categories/1 or /categories/1.json
@@ -55,11 +65,10 @@ class CategoriesController < ApplicationController
 
   # DELETE /categories/1 or /categories/1.json
   def destroy
-    @category.destroy!
-
-    respond_to do |format|
-      format.html { redirect_to categories_path, status: :see_other, notice: "Categoria excluida com sucesso." }
-      format.json { head :no_content }
+    if @category.destroy
+      redirect_to categories_path, notice: 'Categoria excluída com sucesso.'
+    else
+      redirect_to categories_path, alert: @category.errors.full_messages.to_sentence
     end
   end
 

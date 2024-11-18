@@ -79,27 +79,16 @@ label {
     font-weight: bold;
 }
 
-/* input[type="text"],
-input[type="email"],
-input[type="url"],
-input[type="file"],
-input[type="tel"],
-textarea {
-    padding: 10px;
-    margin-bottom: 15px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 12px;
-} */
+.form-label {
+  margin-bottom: 0.1rem;
+}
 
 input[type="submit"] {
     background-color: #5cb85c;
     color: white;
-    padding: 10px;
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    font-size: 16px;
 }
 
 input[type="submit"]:hover {
@@ -109,9 +98,17 @@ input[type="submit"]:hover {
 .categories-table,
 .attributes-table,
 .products-table,
-.users-table,
 .users-table {
     margin: 20px;
+    line-height: 1 !important;
+    padding: 4px 8px !important;
+}
+
+.table tr, 
+.table th, 
+.table td {
+  line-height: 1 !important;
+  padding: 4px 8px !important;
 }
   
 .table {
@@ -121,7 +118,6 @@ input[type="submit"]:hover {
 
 .table th, .table td {
   border: 1px solid #ddd;
-  padding: 8px;
   text-align: left;
 }
 
@@ -198,7 +194,7 @@ input[type="submit"]:hover {
 .footer {
   background-color: #000; /* Preto */
   color: #fff; /* Branco */
-  font-size: 0.8em; /* Ou o tamanho que você preferir */
+  font-size: 0.6em; /* Ou o tamanho que você preferir */
 }
 
 .footer span {
@@ -206,7 +202,7 @@ input[type="submit"]:hover {
 }
 
 .footer .language-flag {
-  width: 32px;
+  width: 23px;
   height: auto;
   margin-left: 10px;
 }

@@ -3,13 +3,21 @@ class UsersController < ApplicationController
   before_action :authorize_admin!
   before_action :admin_only
   before_action :set_user, only: [:toggle_active, :manage_categories, :update_categories]
+  load_and_authorize_resource
 
   def index
     @per_page = 6 
-    @page = params[:page].to_i > 0 ? params[:page].to_i : 1
-    @users = User.limit(@per_page).offset((@page - 1) * @per_page)   
-    @total_users = User.count
+    @page = params[:page].to_i > 0 ? params[:page].to_i : 
+    1
+    users_scope = User.all
+    users_scope = users_scope.where("name ILIKE ?", "%#{params[:name]}%") if params[:name].present?
+    users_scope = users_scope.where("email ILIKE ?", "%#{params[:email]}%") if params[:email].present?
+    users_scope = users_scope.where("phone ILIKE ?", "%#{params[:phone]}%") if params[:phone].present?
+    users_scope = users_scope.where(active: params[:active]) if params[:active].present?
+  
+    @total_users = users_scope.count
     @total_pages = (@total_users / @per_page.to_f).ceil
+    @users = users_scope.limit(@per_page).offset((@page.to_i - 1) * @per_page)
   end
 
   def show

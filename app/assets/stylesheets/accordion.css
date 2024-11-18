@@ -1,0 +1,83 @@
+.accordion-body {
+    padding: 5px 5px 5px 5px; /* Ajuste os valores para o padding desejado */
+}
+
+/* Estilos gerais para o Accordion */
+.accordion-item,
+.accordion-body,
+.accordion-button {
+  border: none !important;
+}
+
+.accordion-button {
+  background-color: #2a2a2a; /* Fundo padrão */
+  color: #f5f5f5; /* Cor do texto */
+  width: 20px;
+  height: 10px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.accordion-button:hover {
+  color: #ddd; /* Hover padrão */
+}
+
+.accordion-button:focus {
+  box-shadow: none;
+  outline: none;
+}
+
+.accordion-button:not(.collapsed) {
+  background-color: #333333;
+  color: #ffffff;
+  content: ''; /* Remove qualquer conteúdo */
+}
+
+.accordion-button.collapsed::after {
+  content: '+';
+  font-size: 16px;
+}
+
+.accordion-button:not(.collapsed)::after {
+  content: '−';
+  font-size: 16px;
+}
+
+.accordion-icon {
+  color: #f5f5f5;
+}
+
+.accordion-dark-theme {
+  --accordion-expanded-bg: #333333;
+  --accordion-body-bg: #3a3a3a;
+  --accordion-text: #ffffff;
+  --accordion-link-hover: #66ccff;
+  --bs-accordion-border-color: transparent;
+}
+
+.accordion-dark-theme .accordion-item {
+  background-color: var(--accordion-bg);
+  color: var(--accordion-text);
+}
+
+.accordion-dark-theme .accordion-header a {
+  color: #f5f5f5;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.accordion-dark-theme .accordion-button {
+  color: var(--accordion-text);
+}
+
+.accordion-dark-theme .accordion-body {
+  background-color: var(--accordion-body-bg);
+  color: #e0e0e0;
+  padding-left: 1.5rem;
+}
+
+.accordion-dark-theme .accordion-body a:hover {
+  color: var(--accordion-link-hover);
+}
