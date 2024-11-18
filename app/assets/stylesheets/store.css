@@ -73,7 +73,6 @@ label {
 
 /* Define uma altura máxima para o card de filtro de categoria */
 .category-filters-card {
-  max-height: 400px;
   overflow-y: auto;
   margin-top: 230px;
   /* Espaço em relação ao topo */

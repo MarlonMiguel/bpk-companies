@@ -6,14 +6,14 @@ class PagesController < ApplicationController
     @products = Product.joins(:category).where(active: true)
 
     # Filtro por categoria selecionada ou ids de categorias múltiplas
-    if params[:category_ids].present?
-      @products = @products.where(category_id: params[:category_ids])
-    elsif params[:category_id].present?
+    if params[:category_id].present?
       selected_category = Category.find_by(id: params[:category_id])
       if selected_category
-        category_ids = [selected_category.id] + selected_category.subcategories.pluck(:id)
+        category_ids = [selected_category.id] + selected_category.all_subcategory_ids
         @products = @products.where(category_id: category_ids)
       end
+    elsif params[:category_ids].present?
+      @products = @products.where(category_id: params[:category_ids])
     end
 
     # Filtros adicionais
