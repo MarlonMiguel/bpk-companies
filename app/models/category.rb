@@ -10,6 +10,12 @@ class Category < ApplicationRecord
     before_destroy :check_dependencies
   
     validate :parent_cannot_be_self, if: -> { parent_id.present? }
+  
+    def all_subcategory_ids
+      subcategories_ids = subcategories.pluck(:id)
+      subcategories_ids += subcategories.flat_map(&:all_subcategory_ids) if subcategories.any?
+      subcategories_ids
+    end
 
     def full_description
       parent ? "#{parent.full_description} -> #{description}" : description
