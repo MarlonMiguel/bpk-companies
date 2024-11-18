@@ -3,6 +3,7 @@ class UsersController < ApplicationController
   before_action :authorize_admin!
   before_action :admin_only
   before_action :set_user, only: [:toggle_active, :manage_categories, :update_categories]
+  load_and_authorize_resource
 
   def index
     @per_page = 6 

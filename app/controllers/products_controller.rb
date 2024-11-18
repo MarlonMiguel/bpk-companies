@@ -3,6 +3,7 @@ class ProductsController < ApplicationController
   before_action :set_product, only: [:show, :edit, :update, :destroy, :toggle_active]
   before_action :authorize_user!, only: %i[ edit update destroy ]
   before_action :set_categories, only: [:new, :create, :edit, :update]
+  load_and_authorize_resource
 
   # GET /products or /products.json
   def index
@@ -96,38 +97,6 @@ class ProductsController < ApplicationController
       )
     end
   end
-
-  # PATCH/PUT /products/1 or /products/1.json
-  # def update
-  #   @product = Product.find(params[:id])
-  
-  #   # Preservar imagens existentes
-  #   if params[:product][:existing_images]
-  #     existing_images = params[:product][:existing_images].map { |id| ActiveStorage::Blob.find_signed(id) }
-  #     @product.images.attach(existing_images)
-  #   end
-  
-  #   if @product.update(product_params)
-  #     redirect_to @product, notice: 'Produto atualizado com sucesso.'
-  #   else
-  #     render :edit
-  #   end
-
-
-    # logger.debug "Parameters received for update: #{params.inspect}" # Adiciona log dos parâmetros
-  
-    # respond_to do |format|
-    #   if @product.update(product_params)
-    #     logger.debug "Product updated successfully: #{@product.inspect}" # Log de sucesso
-    #     format.html { redirect_to @product, notice: "Product was successfully updated." }
-    #     format.json { render :show, status: :ok, location: @product }
-    #   else
-    #     logger.debug "Failed to update product: #{@product.errors.full_messages}" # Log de erro
-    #     format.html { render :edit, status: :unprocessable_entity }
-    #     format.json { render json: @product.errors, status: :unprocessable_entity }
-    #   end
-    # end
-  # end
 
   def update
     @product = Product.find(params[:id])

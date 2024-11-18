@@ -81,3 +81,5 @@ gem "cssbundling-rails", "~> 1.4"
 
 gem 'debug', '~> 1.0'
 
+gem 'cancancan'
+

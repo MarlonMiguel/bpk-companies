@@ -1,5 +1,6 @@
 class AttributesController < ApplicationController
   before_action :set_attribute, only: %i[ show edit update destroy ]
+  load_and_authorize_resource
 
   # GET /attributes or /attributes.json
   def index

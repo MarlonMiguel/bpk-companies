@@ -49,11 +49,9 @@
             <% end %>
             
             <%= link_to category_path(category, locale: I18n.locale), 
-                        method: :delete, 
-                        data: { turbo_method: :delete, turbo_confirm: "Tem certeza que deseja excluir esta categoria?" }, 
+                        data: { turbo_method: :delete, turbo_confirm: "Tem certeza que deseja excluir esta categoria?", bs_toggle: "tooltip" }, 
                         class: "btn btn-sm btn-danger", 
-                        title: "Excluir categoria", 
-                        data: { bs_toggle: "tooltip" } do %>
+                        title: "Excluir categoria" do %>
               <i class="bi bi-trash"></i>
             <% end %>
           </td>
