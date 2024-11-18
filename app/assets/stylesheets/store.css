@@ -78,7 +78,13 @@ label {
   margin-top: 230px;
   /* Espaço em relação ao topo */
   max-width: 250px;
+  width: 100%;
+  height: auto;  /* Faz o card crescer conforme o conteúdo */
   /* Largura máxima para o card */
+    /* Espaço no fundo e bordas para melhorar a aparência */
+  padding: 10px;
+  border-radius: 5px;
+  background-color: #f8f9fa;  /* Cor de fundo clara, pode ajustar */
 }
 
 /* Define uma altura ajustada para o card de filtro de nome e preço */
