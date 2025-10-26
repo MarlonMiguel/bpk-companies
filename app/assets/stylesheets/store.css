@@ -28,6 +28,7 @@
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  overflow-y: auto;
 }
 
 .custom-margin-top {
@@ -74,7 +75,7 @@ label {
 /* Define uma altura máxima para o card de filtro de categoria */
 .category-filters-card {
   overflow-y: auto;
-  margin-top: 230px;
+  margin-top: 30px;
   /* Espaço em relação ao topo */
   max-width: 250px;
   width: 100%;
@@ -89,4 +90,18 @@ label {
 /* Define uma altura ajustada para o card de filtro de nome e preço */
 .name-price-filters-card {
   max-height: 200px;
+}
+
+.sidebar-fixed {
+  position: fixed; /* Torna o bloco fixo na tela */
+  width: 218px; /* Largura do bloco lateral */
+  overflow-y: auto; /* Habilita rolagem vertical dentro do bloco */
+  z-index: 1050; /* Garante que o bloco fique acima de outros elementos */
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.navbar {
+  position: static;
+  border-radius: 5%;
 }
