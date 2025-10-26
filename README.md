@@ -35,8 +35,8 @@ System developed in **Ruby on Rails** for managing sales within the **Biopark** 
 
 ### 1. Clone o repositório
 ```bash
-git clone <url-do-repositorio>
-cd <nome-do-projeto>
+git clone https://github.com/MarlonMiguel/bpk-companies.git
+cd bpk-companies
 ```
 
 ### 2. Instale as dependências Ruby
@@ -62,13 +62,12 @@ Crie e prepare o banco:
 ```bash
 bin/rails db:create
 bin/rails db:migrate
-bin/rails db:seed   # se houver seeds
 ```
 
 Se preferir:
 
 ```bash
-bin/rails db:setup   # create + migrate + seed
+bin/rails db:setup   # create + migrate
 ```
 
 ---
@@ -129,21 +128,9 @@ User.create!(
 
 ---
 
-## 🔄 Tarefas de Background (se o projeto usar Sidekiq)
-
-```bash
-redis-server
-bundle exec sidekiq
-```
-
-Acesse painel Sidekiq (se configurado):
-```
-http://localhost:3000/sidekiq
-```
-
 ---
 
-## 🧪 Testes (se houver)
+## 🧪 Testes
 
 ```bash
 bundle exec rspec
