@@ -2,19 +2,26 @@
   <%= stylesheet_link_tag 'store', media: 'all' %>
 <% end %>
 
-<%= render 'shared/accordion' %>
 <div class="row">
   <!-- Filtro de categorias à esquerda -->
-  <div class="col-md-2">
-    <%= turbo_frame_tag 'filters' do %>
-      <%= form_with(url: store_path, method: :get, data: { turbo_frame: 'products' }, id: 'filter-form') do %>
-        <div class="card p-3 mb-4 category-filters-card">
-          <div class="categories-checkboxes">
-            <%= render_categories(@categories_filter, 0, [], nil, @product_counts) %>
+  <div class="col-md-2 sidebar-fixed">
+    <div class="col-md-12">
+      <%= render 'shared/accordion' %>
+    </div>
+    <div class="col-md-12">
+      <%= turbo_frame_tag 'filters' do %>
+        <%= form_with(url: store_path, method: :get, data: { turbo_frame: 'products' }, id: 'filter-form') do %>
+          <div class="card p-3 mb-4 category-filters-card">
+            <div class="categories-checkboxes">
+              <%= render_categories(@categories_filter, 0, [], nil, @product_counts) %>
+            </div>
           </div>
-        </div>
+        <% end %>
       <% end %>
-    <% end %>
+    </div>
+  </div>
+
+  <div class="col-md-2">
   </div>
 
   <!-- Filtros de Nome e Preço e Lista de Produtos -->
